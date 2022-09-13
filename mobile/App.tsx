@@ -1,17 +1,13 @@
-import { useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import RootNavigator from './navigation'
-import { View } from 'react-native'
-import HomeScreen from './screens/HomeScreen/HomeScreen'
-import LoginScreen from './screens/LoginScreen/LoginScreen'
-import { HomeIcon } from 'react-native-heroicons/solid'
+import { Provider } from 'react-redux'
+import { store } from './app/store'
 
-//mik dhksjdks
 export default function App() {
   return (
-    <>
+    <Provider store={store}>
       <RootNavigator />
       <StatusBar style='auto' />
-    </>
+    </Provider>
   )
 }
