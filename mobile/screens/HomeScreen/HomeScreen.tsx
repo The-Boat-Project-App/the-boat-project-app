@@ -18,7 +18,7 @@ const HomeScreen: React.FunctionComponent<HomeScreenProps> = ({}) => {
       .then((data) => setServerSurprise(data.surprise))
   }
   return (
-    <View className='flex-1 items-center justify-center bg-blue-300'>
+    <View className='flex-1 items-center justify-center bg-red-300'>
       <Text className='font-bold text-xl'>Au boulot ! ⛵</Text>
       <CustomButton buttonTitle='Fetcher le serveur' onPress={fetchData} />
       <Text>{serverSurprise}</Text>
