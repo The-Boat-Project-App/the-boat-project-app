@@ -1,6 +1,6 @@
 import { View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import CustomButton from '../../components/CustomButton/CustomButton'
+import CustomButton from '@components/CustomButton/CustomButton'
 
 interface LoginScreenProps {}
 
