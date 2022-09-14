@@ -2,7 +2,7 @@ import * as React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { HomeStackNavigatorParamList } from './types'
 
-import LoginScreen from '../screens/LoginScreen/LoginScreen'
+import LoginScreen from '@screens/LoginScreen/LoginScreen'
 import BottomTabs from './Tabs'
 const HomeStack = createNativeStackNavigator<HomeStackNavigatorParamList>()
 
