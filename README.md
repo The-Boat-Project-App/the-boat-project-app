@@ -88,7 +88,8 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 ### Built With
 
 - [![Next][next.js]][next-url]
-- [![React][react.js]][react-url]
+- [![React][react.js]][react-url] 
+- <img src="[{BadgeURLHere}](https://img.shields.io/badge/Expo-1B1F23?style=for-the-badge&logo=expo&logoColor=white)" />
 - [![Expo]![image]({https://img.shields.io/badge/Expo-1B1F23?style=for-the-badge&logo=expo&logoColor=white})
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
