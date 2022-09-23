@@ -30,7 +30,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/github_username/repo_name">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="https://res.cloudinary.com/matthieudev/image/upload/v1663963275/Capture_d_e%CC%81cran_2022-09-23_a%CC%80_22.00.57_g4qsu6.png" alt="Logo" width="250">
   </a>
 
 <h3 align="center">The Boat Project App</h3>
@@ -88,13 +88,9 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 ### Built With
 
 - [![Next][next.js]][next-url]
-- [![React][react.js]][react-url]
-- [![Vue][vue.js]][vue-url]
-- [![Angular][angular.io]][angular-url]
-- [![Svelte][svelte.dev]][svelte-url]
-- [![Laravel][laravel.com]][laravel-url]
-- [![Bootstrap][bootstrap.com]][bootstrap-url]
-- [![JQuery][jquery.com]][jquery-url]
+- [![React][react.js]][react-url] 
+- <img src="[{BadgeURLHere}](https://img.shields.io/badge/Expo-1B1F23?style=for-the-badge&logo=expo&logoColor=white)" />
+- [![Expo]![image]({https://img.shields.io/badge/Expo-1B1F23?style=for-the-badge&logo=expo&logoColor=white})
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
