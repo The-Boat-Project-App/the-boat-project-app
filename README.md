@@ -89,12 +89,7 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 
 - [![Next][next.js]][next-url]
 - [![React][react.js]][react-url]
-- [![Vue][vue.js]][vue-url]
-- [![Angular][angular.io]][angular-url]
-- [![Svelte][svelte.dev]][svelte-url]
-- [![Laravel][laravel.com]][laravel-url]
-- [![Bootstrap][bootstrap.com]][bootstrap-url]
-- [![JQuery][jquery.com]][jquery-url]
+- [![Expo]![image]({https://img.shields.io/badge/Expo-1B1F23?style=for-the-badge&logo=expo&logoColor=white})
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
