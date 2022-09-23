@@ -30,7 +30,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/github_username/repo_name">
-    <img src="https://res.cloudinary.com/matthieudev/image/upload/v1663963275/Capture_d_e%CC%81cran_2022-09-23_a%CC%80_22.00.57_g4qsu6.png" alt="Logo" width="80" height="80">
+    <img src="https://res.cloudinary.com/matthieudev/image/upload/v1663963275/Capture_d_e%CC%81cran_2022-09-23_a%CC%80_22.00.57_g4qsu6.png" alt="Logo" width="250">
   </a>
 
 <h3 align="center">The Boat Project App</h3>
