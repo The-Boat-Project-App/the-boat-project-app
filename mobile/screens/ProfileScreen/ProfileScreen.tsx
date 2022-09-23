@@ -25,7 +25,7 @@ const ProfileScreen: React.FunctionComponent<ProfileScreenProps> = ({}) => {
           <CameraIcon size={40} color={'#87BC23'} />
         </TouchableOpacity>
       </View>
-      <Text className='text-center font-bold text-xl mt-5 text-gray-600'> Minchia belluci</Text>
+      <Text className='text-center font-bold text-xl mt-5 text-gray-600'> Minchia bellucci</Text>
       <Text className='text-center ' selectionColor='#0C617D'>
         Compagnon de la Méditerranée
       </Text>
