@@ -3,8 +3,7 @@ import { useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { Text, View, Button, Image, StyleSheet, TouchableOpacity, ScrollView } from 'react-native'
 import { API_URL } from 'react-native-dotenv'
-
-import CustomButton from '../../components/CustomButton/CustomButton'
+import HeaderTBP2 from '@components/HeaderTBP2/HeaderTBP2'
 
 interface HomeScreenProps {}
 
