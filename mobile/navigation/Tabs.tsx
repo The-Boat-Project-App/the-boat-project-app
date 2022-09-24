@@ -5,14 +5,14 @@ import {
   MapIcon,
   ChatBubbleBottomCenterTextIcon,
   UserIcon,
-  PlusCircleIcon,
 } from 'react-native-heroicons/solid'
+import { PlusCircleIcon as PlusCircleIconOutline } from 'react-native-heroicons/outline'
 
+import { Text } from 'react-native'
 import { BottomTabNavigatorParamList } from './types'
 import HomeScreen from '@screens/HomeScreen/HomeScreen'
 import MapScreen from '@screens/MapScreen/MapScreen'
-import OtherScreen from '@screens/OtherScreen/OtherScreen'
-import CarteScreen from '@screens/CarteScreen/CarteScreen'
+import MessagesScreen from '@screens/MessagesScreen/MessagesScreen'
 import ProfileScreen from '@screens/ProfileScreen/ProfileScreen'
 import AddPostScreen from '@screens/AddPostScreen/AddPostScreen'
 
@@ -25,29 +25,76 @@ const BottomTabs = () => {
         tabBarIcon: ({ focused, color, size }) => {
           if (route.name === 'Home') {
             return <HomeIcon size={size} color={color} />
-          } else if (route.name === 'Other') {
+          } else if (route.name === 'Messages') {
             return <ChatBubbleBottomCenterTextIcon size={size} color={color} />
           } else if (route.name === 'Profile') {
             return <UserIcon size={size} color={color} />
           } else if (route.name === 'AddPost') {
-            return <PlusCircleIcon size={size} color={color} />
-          } else if (route.name === 'Carte') {
+            return <PlusCircleIconOutline size={size * 1.9} color={color} />
+          } else if (route.name === 'Map') {
             return <MapIcon size={size} color={color} />
           }
 
           // You can return any component that you like here!
         },
+        // tabBarLabel: () => {
+        //   if (route.name === 'Home') {
+        //     return <Text>Accueil</Text>
+        //   } else if (route.name === 'Messages') {
+        //     return <Text>Accueil</Text>
+        //   } else if (route.name === 'Profile') {
+        //     return <Text>Accueil</Text>
+        //   } else if (route.name === 'AddPost') {
+        //     return <Text>Accueil</Text>
+        //   } else if (route.name === 'Map') {
+        //     return <></>
+        //   }
+
+        //   // You can return any component that you like here!
+        // },
         tabBarActiveTintColor: '#87BC23',
         tabBarInactiveTintColor: '#0C617D',
         headerShown: false,
+        tabBarStyle: {
+          paddingTop: 5,
+        },
       })}
     >
-      <Tab.Screen name='Home' component={HomeScreen} />
-      <Tab.Screen name='Map' component={MapScreen} />
-      <Tab.Screen name='Other' component={OtherScreen} />
-      <Tab.Screen name='AddPost' component={AddPostScreen} />
-      <Tab.Screen name='Carte' component={CarteScreen} />
-      <Tab.Screen name='Profile' component={ProfileScreen} />
+      <Tab.Screen
+        name='Home'
+        component={HomeScreen}
+        options={{
+          tabBarLabel: 'Home',
+        }}
+      />
+      <Tab.Screen
+        name='Map'
+        component={MapScreen}
+        options={{
+          tabBarLabel: 'Carte',
+        }}
+      />
+      <Tab.Screen
+        name='AddPost'
+        component={AddPostScreen}
+        options={{
+          tabBarLabel: '',
+        }}
+      />
+      <Tab.Screen
+        name='Messages'
+        component={MessagesScreen}
+        options={{
+          tabBarLabel: 'Messages',
+        }}
+      />
+      <Tab.Screen
+        name='Profile'
+        component={ProfileScreen}
+        options={{
+          tabBarLabel: 'Profil',
+        }}
+      />
     </Tab.Navigator>
   )
 }
