@@ -1,13 +1,26 @@
 import { useState } from 'react'
 
 import { StatusBar } from 'expo-status-bar'
-import { Text, View, Button, Image, StyleSheet, TouchableOpacity, ScrollView } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+
+import {
+  useWindowDimensions,
+  Text,
+  View,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native'
 import { API_URL } from 'react-native-dotenv'
 import HeaderTBP2 from '@components/HeaderTBP2/HeaderTBP2'
 
 interface HomeScreenProps {}
 
 const HomeScreen: React.FunctionComponent<HomeScreenProps> = ({}) => {
+  const { height, width } = useWindowDimensions()
+  const navigation = useNavigation()
+
   console.log('API_URL', API_URL)
   const [serverSurprise, setServerSurprise] = useState('...')
   const fetchData = () => {
@@ -24,9 +37,9 @@ const HomeScreen: React.FunctionComponent<HomeScreenProps> = ({}) => {
           <Image
             className='mb-2'
             source={{
-              uri: 'https://uc9e29996338651150bd38676e06.previews.dropboxusercontent.com/p/pdf_img/ABozO0ulHmBlOJ8DjZ8GhrRkVqApARV9oe4fiMIMJbAzJiaIXHhnzJUZ7VYzosTTmNE5sdllEMChw7Al6qcbyPLLB_qt14wdYRMDUfY9QopyHqoKT_SkJcZTFsN8rjpUKp5YWFZ_Ku3B9VP8iEsP3t87er8GgZ19QMQRUAU2Xfb64EuQD4ZoyGaj03J8p7E_t5KYzm8FYx2MT6gUIY84M42TFZ-xl4t9ymO1aHtdSnCDLVj2bsGViqeAxlY-YSeVT29dyLcvNxNZppW2RSYlGfxNoVqCf4X2WnDTHaWOXxDrjjVn9WwR0AJ6IB1ILmFbgkFijQi93YgQNdIpF-yp1AJX2wzZX8gZGSlot5N0OGqtioPT9mAMhhhuEtqfL6iq-ixXRsnmyaF6crUR9s-CSz89/p.png?page=0&scale_percent=0',
+              uri: 'https://camo.githubusercontent.com/a4c2e531fddea46509f4aac9dce43d10f8592b1ef23cba021aa958d77979956c/68747470733a2f2f7265732e636c6f7564696e6172792e636f6d2f6d617474686965756465762f696d6167652f75706c6f61642f76313636333936333237352f436170747572655f645f652543432538316372616e5f323032322d30392d32335f612543432538305f32322e30302e35375f6734717375362e706e67',
             }}
-            style={styles.logo}
+            style={{ width: width * 0.5, height: width * 0.2, resizeMode: 'contain' }}
           />
           <View className='flex-row space-x-4'>
             <TouchableOpacity className=' mt-1 p-2 border border-cyan-700 rounded-lg '>
@@ -110,7 +123,10 @@ const HomeScreen: React.FunctionComponent<HomeScreenProps> = ({}) => {
               </Text>
             </TouchableOpacity>
           </ScrollView>
-          <TouchableOpacity className='p-2  ml-2 mr-2 mt-3 rounded-xl bg-white'>
+          <TouchableOpacity
+            className='p-2  ml-2 mr-2 mt-3 rounded-xl bg-white'
+            onPress={() => navigation.navigate('Map')}
+          >
             <Image
               className='w-full h-20 rounded-xl'
               source={{
@@ -164,7 +180,7 @@ const HomeScreen: React.FunctionComponent<HomeScreenProps> = ({}) => {
             </TouchableOpacity>
           </ScrollView>
 
-          <Text className='text-xl font-bold color-cyan-900 mt-2'>Les dernières publications</Text>
+          <Text className='text-xl font-bold color-cyan-900 mt-2'>Journal de bord</Text>
 
           <ScrollView>
             <TouchableOpacity className='flex-row bg-white p-2 rounded-xl mb-2'>
@@ -241,11 +257,8 @@ const HomeScreen: React.FunctionComponent<HomeScreenProps> = ({}) => {
     </View>
   )
 }
+
 const styles = StyleSheet.create({
-  logo: {
-    width: 200,
-    height: 50,
-  },
   colorBlue: { color: '#0C617D' },
   colorDate: { backgroundColor: '#139db8' },
 })
