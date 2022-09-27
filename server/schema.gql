@@ -10,11 +10,14 @@ scalar DateTime
 
 type LoginResponse {
   accessToken: String!
+  firstName: String!
+  lastName: String!
+  refreshToken: String!
 }
 
 type Mutation {
   createNotes(newNotesInput: NotesInput!): Notes!
-  createUsers(newUsersInput: UsersInput!): Users!
+  createUsers(newUsersInput: UsersInput!): RegisterResponse!
   deleteNotes(id: String!): String!
   deleteUsers(id: String!): String!
   loginUsers(UsersLoginInput: UsersInput!): LoginResponse!
@@ -43,15 +46,22 @@ input NotesInput {
 }
 
 type Query {
-  bye: String!
   notes(id: String!): Notes!
 
   """Get List of Notes"""
   notesList: [Notes!]!
+  user: Users!
   users(id: String!): Users!
 
   """Get List of Users"""
   usersList: [Users!]!
+}
+
+type RegisterResponse {
+  accessToken: String!
+  firstName: String!
+  lastName: String!
+  refreshToken: String!
 }
 
 """The Users Model"""

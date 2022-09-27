@@ -1,0 +1,8 @@
+mutation Login($UsersLoginInput: UsersInput!) {
+  loginUsers(UsersLoginInput: $UsersLoginInput) {
+    accessToken
+    refreshToken
+    firstName
+    lastName
+  }
+}

@@ -8,6 +8,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 import cookieParser from 'cookie-parser'
 import { UsersModel, Users } from './models/users.model'
+import cors from 'cors'
 
 //Resolvers
 import { NotesResolver } from './resolvers/notes.resolver'
@@ -34,10 +35,47 @@ const executeMain = async () => {
   //* APOLLO SERVER
   const server = new ApolloServer({ schema: schema, context: ({ req, res }) => ({ req, res }) })
   const expressServer: Express.Application = Express()
+  expressServer.use(cors({ origin: 'http://localhost:3000', credentials: true }))
   expressServer.use(cookieParser())
 
-  //* REST API Route for JWT REFRESH TOKEN
-  expressServer.post('/refresh_token', async (req, res) => {
+  //* REST API Route for mobile JWT REFRESH TOKEN
+  expressServer.post('/refresh_token_from_mobile', async (req, res) => {
+    console.log('req.headers.authorization', req.headers.authorization)
+    const refreshToken = req.headers.authorization
+    if (!refreshToken) {
+      return res.send({ ok: false, accessToken: '' })
+    }
+    let payload: any = null
+    const tokenArray = refreshToken.split(' ')
+
+    try {
+      payload = verify(tokenArray[1], process.env.REFRESH_TOKEN_SECRET)
+      console.log('payload', payload)
+    } catch (err) {
+      console.log(err)
+      return res.send({ ok: false, accessToken: '' })
+    }
+
+    //* token is valid and we can send back an access token
+    const user = await UsersModel.findOne({ _id: payload.userId })
+    if (!user) {
+      return res.send({ ok: false, accessToken: '' })
+    }
+    if (user.tokenVersion !== payload.tokenVersion) {
+      return res.send({ ok: false, accessToken: '' })
+    }
+    // sendRefreshToken(res, createRefreshToken(user))
+    return res.send({
+      ok: true,
+      accessToken: createAccessToken(user),
+      refreshToken: createRefreshToken(user),
+      firstName: user.firstName,
+      lastName: user.lastName,
+    })
+  })
+  //* REST API Route for web JWT REFRESH TOKEN
+  expressServer.post('/refresh_token_from_web', async (req, res) => {
+    console.log('req.cookies', req.cookies)
     const token = req.cookies.jid
     if (!token) {
       return res.send({ ok: false, accessToken: '' })
