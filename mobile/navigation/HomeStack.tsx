@@ -6,6 +6,8 @@ import { getAccessToken } from '../accessToken'
 import SignUpScreen from '@screens/SignUpScreen/SignUpScreen'
 import SignInScreen from '@screens/SignInScreen/SignInScreen'
 import BottomTabs from './Tabs'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
+import { StatusBar } from 'expo-status-bar'
 
 //* DEV SCREENS
 import DevScreen from '@screens/DevScreen/DevScreen'
@@ -20,22 +22,26 @@ const HomeStack = createNativeStackNavigator<HomeStackNavigatorParamList>()
 
 const HomeStackNavigator = () => {
   return (
-    <HomeStack.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
-      <HomeStack.Screen name='BottomTabs' component={BottomTabs} />
-      <HomeStack.Screen name='SignIn' component={SignInScreen} />
-      <HomeStack.Screen name='SignUp' component={SignUpScreen} />
-      <HomeStack.Screen name='Dev' component={DevScreen} />
-      <HomeStack.Screen name='Mika' component={MikaScreen} />
-      <HomeStack.Screen name='Aboubacar' component={AboubacarScreen} />
-      <HomeStack.Screen name='Pierre' component={PierreScreen} />
-      <HomeStack.Screen name='Matthieu' component={MatthieuScreen} />
-      <HomeStack.Screen name='Allan' component={AllanScreen} />
-      <HomeStack.Screen name='Camille' component={CamilleScreen} />
-    </HomeStack.Navigator>
+    <SafeAreaProvider>
+      <StatusBar style='light' backgroundColor='#0C617D' />
+
+      <HomeStack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <HomeStack.Screen name='BottomTabs' component={BottomTabs} />
+        <HomeStack.Screen name='SignIn' component={SignInScreen} />
+        <HomeStack.Screen name='SignUp' component={SignUpScreen} />
+        <HomeStack.Screen name='Dev' component={DevScreen} />
+        <HomeStack.Screen name='Mika' component={MikaScreen} />
+        <HomeStack.Screen name='Aboubacar' component={AboubacarScreen} />
+        <HomeStack.Screen name='Pierre' component={PierreScreen} />
+        <HomeStack.Screen name='Matthieu' component={MatthieuScreen} />
+        <HomeStack.Screen name='Allan' component={AllanScreen} />
+        <HomeStack.Screen name='Camille' component={CamilleScreen} />
+      </HomeStack.Navigator>
+    </SafeAreaProvider>
   )
 }
 

@@ -1,0 +1,11 @@
+query getAllNews {
+  NewsList {
+    id
+    title
+    author
+    content
+    mainPicture
+    createdAt
+    isActive
+  }
+}

@@ -27,14 +27,22 @@ export type LoginResponse = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createNews: News;
   createNotes: Notes;
   createUsers: RegisterResponse;
+  deleteNews: Scalars['String'];
   deleteNotes: Scalars['String'];
   deleteUsers: Scalars['String'];
   loginUsers: LoginResponse;
   revokeRefreshTokensForUser: Scalars['Boolean'];
+  updateNews: News;
   updateNotes: Notes;
   updateUsers: Users;
+};
+
+
+export type MutationCreateNewsArgs = {
+  newNewsInput: NewsInput;
 };
 
 
@@ -45,6 +53,11 @@ export type MutationCreateNotesArgs = {
 
 export type MutationCreateUsersArgs = {
   newUsersInput: UsersInput;
+};
+
+
+export type MutationDeleteNewsArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -68,6 +81,11 @@ export type MutationRevokeRefreshTokensForUserArgs = {
 };
 
 
+export type MutationUpdateNewsArgs = {
+  editNewsInput: NewsInput;
+};
+
+
 export type MutationUpdateNotesArgs = {
   editNotesInput: NotesInput;
 };
@@ -75,6 +93,28 @@ export type MutationUpdateNotesArgs = {
 
 export type MutationUpdateUsersArgs = {
   editUsersInput: UsersInput;
+};
+
+/** The News Model */
+export type News = {
+  __typename?: 'News';
+  author: Scalars['String'];
+  content?: Maybe<Scalars['String']>;
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  isActive?: Maybe<Scalars['Boolean']>;
+  mainPicture?: Maybe<Scalars['String']>;
+  title: Scalars['String'];
+};
+
+export type NewsInput = {
+  author: Scalars['String'];
+  content?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  id?: InputMaybe<Scalars['ID']>;
+  isActive?: InputMaybe<Scalars['Boolean']>;
+  mainPicture?: InputMaybe<Scalars['String']>;
+  title: Scalars['String'];
 };
 
 /** The Notes Model */
@@ -99,6 +139,9 @@ export type NotesInput = {
 
 export type Query = {
   __typename?: 'Query';
+  News: News;
+  /** Get List of News */
+  NewsList: Array<News>;
   notes: Notes;
   /** Get List of Notes */
   notesList: Array<Notes>;
@@ -106,6 +149,11 @@ export type Query = {
   users: Users;
   /** Get List of Users */
   usersList: Array<Users>;
+};
+
+
+export type QueryNewsArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -167,6 +215,11 @@ export type UsersInput = {
   updatedAt?: InputMaybe<Scalars['DateTime']>;
 };
 
+export type GetAllNewsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllNewsQuery = { __typename?: 'Query', NewsList: Array<{ __typename?: 'News', id: string, title: string, author: string, content?: string | null, mainPicture?: string | null, createdAt: any, isActive?: boolean | null }> };
+
 export type GetAllUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -192,6 +245,46 @@ export type RegisterMutationVariables = Exact<{
 export type RegisterMutation = { __typename?: 'Mutation', createUsers: { __typename?: 'RegisterResponse', accessToken: string, refreshToken: string, firstName: string, lastName: string } };
 
 
+export const GetAllNewsDocument = gql`
+    query getAllNews {
+  NewsList {
+    id
+    title
+    author
+    content
+    mainPicture
+    createdAt
+    isActive
+  }
+}
+    `;
+
+/**
+ * __useGetAllNewsQuery__
+ *
+ * To run a query within a React component, call `useGetAllNewsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllNewsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllNewsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllNewsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetAllNewsQuery, GetAllNewsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<GetAllNewsQuery, GetAllNewsQueryVariables>(GetAllNewsDocument, options);
+      }
+export function useGetAllNewsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetAllNewsQuery, GetAllNewsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<GetAllNewsQuery, GetAllNewsQueryVariables>(GetAllNewsDocument, options);
+        }
+export type GetAllNewsQueryHookResult = ReturnType<typeof useGetAllNewsQuery>;
+export type GetAllNewsLazyQueryHookResult = ReturnType<typeof useGetAllNewsLazyQuery>;
+export type GetAllNewsQueryResult = Apollo.QueryResult<GetAllNewsQuery, GetAllNewsQueryVariables>;
 export const GetAllUsersDocument = gql`
     query getAllUsers {
   usersList {
