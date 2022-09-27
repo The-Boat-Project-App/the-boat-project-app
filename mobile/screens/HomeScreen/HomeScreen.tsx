@@ -66,10 +66,10 @@ const HomeScreen: React.FunctionComponent<HomeScreenProps> = ({}) => {
           </View>
         </View>
       </View>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View className='justify-center bg-slate-100 pl-2 pr-2'>
           <Text className='font-bold text-xl color-cyan-900 '>Actualités</Text>
-          <ScrollView className='' horizontal={true}>
+          <ScrollView className='' horizontal={true} showsHorizontalScrollIndicator={false}>
             <TouchableOpacity className='w-48 p-2'>
               <Image
                 className='rounded-xl w-full h-16'
@@ -137,7 +137,7 @@ const HomeScreen: React.FunctionComponent<HomeScreenProps> = ({}) => {
           <Text className='text-xl font-bold color-cyan-900 mt-2'>
             Les compagnon de la Méditéranée
           </Text>
-          <ScrollView horizontal={true}>
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             <TouchableOpacity>
               <Image
                 className='w-20 h-20 rounded-full mt-3 ml-3'

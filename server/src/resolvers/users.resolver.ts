@@ -18,16 +18,41 @@ import { MyContext } from './MyContext'
 import { createAccessToken, createRefreshToken } from './auth'
 import { isAuth } from './isAuth'
 import { sendRefreshToken } from './sendRefreshToken'
-import { addResolveFunctionsToSchema } from 'apollo-server-express'
 
 @ObjectType()
 class LoginResponse {
   @Field()
   accessToken: string
+  @Field()
+  refreshToken: string
+  @Field()
+  firstName: string
+  @Field()
+  lastName: string
+}
+
+@ObjectType()
+class RegisterResponse {
+  @Field()
+  accessToken: string
+  @Field()
+  refreshToken: string
+  @Field()
+  firstName: string
+  @Field()
+  lastName: string
 }
 
 @Resolver((_of) => Users)
 export class UsersResolver {
+  //* get userData with userid from middleware
+  @Query(() => Users, { nullable: false, name: 'user' })
+  @UseMiddleware(isAuth)
+  async getUserData(@Ctx() { payload }: MyContext) {
+    return await UsersModel.findById({ _id: payload.userId })
+  }
+  //*
+
   @Query((_returns) => Users, { nullable: false, name: 'users' })
   async getUsersById(@Arg('id') id: string) {
     return await UsersModel.findById({ _id: id })
@@ -36,12 +61,6 @@ export class UsersResolver {
   @Query(() => [Users], { name: 'usersList', description: 'Get List of Users' })
   async getAllUsers() {
     return await UsersModel.find()
-  }
-
-  @Query(() => String)
-  @UseMiddleware(isAuth)
-  bye(@Ctx() { payload }: MyContext) {
-    return `your user id is : ${payload.userId}`
   }
 
   //* Sign-in with bcrypt compare & JWT
@@ -62,28 +81,44 @@ export class UsersResolver {
     }
 
     //* login successful
+    const refreshToken = createRefreshToken(user)
     sendRefreshToken(res, createRefreshToken(user))
 
     return {
       accessToken: createAccessToken(user),
+      refreshToken: refreshToken,
+      lastName: user.lastName,
+      firstName: user.firstName,
     }
   }
 
-  @Mutation(() => Users, { name: 'createUsers' })
+  @Mutation(() => RegisterResponse, { name: 'createUsers' })
   async createUsers(
     @Arg('newUsersInput') { firstName, lastName, email, password }: UsersInput,
-  ): Promise<Users> {
+    @Ctx() { req, res }: MyContext,
+  ): Promise<RegisterResponse> {
     const hashedPassword = await hash(password, 12)
-    const users = (
-      await UsersModel.create({
-        firstName,
-        lastName,
-        email,
-        password: hashedPassword,
-      })
-    ).save()
+    const newUser = await UsersModel.create({
+      firstName,
+      lastName,
+      email,
+      password: hashedPassword,
+    })
+    const user = await newUser.save()
+    console.log('lastnam créé dans resolver', user.lastName)
 
-    return users
+    //* Registration successful
+    const refreshToken = createRefreshToken(user)
+    const accessToken = createAccessToken(user)
+    console.log('accessToken dans resolver', accessToken)
+    console.log('refreshToken dans resolver', refreshToken)
+    sendRefreshToken(res, refreshToken)
+    return {
+      accessToken: accessToken,
+      refreshToken: refreshToken,
+      lastName: user.lastName,
+      firstName: user.firstName,
+    }
   }
 
   @Mutation(() => Users, { name: 'updateUsers' })
