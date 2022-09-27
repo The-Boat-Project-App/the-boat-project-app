@@ -1,28 +1,31 @@
-import { View, Text, Image } from "react-native";
-import React from "react";
+import { View, Image } from 'react-native'
 
 interface CustomAvatar {
-  avatarPicture: string;
-  avatarIsConnected: boolean;
+  avatarPicture: string
+  isConnected: boolean
 }
 
 export const CustomAvatar: React.FunctionComponent<CustomAvatarProps> = ({
   avatarPicture,
-  avatarIsConnected,
+  isConnected,
 }) => {
   return (
-    <View className="flex mx-2">
+    <View className='w-20 h-20 items-center justify-center'>
       <Image
-        className="p-1 w-20 h-20 rounded-full ring-2"
-        source={avatarPicture}
+        source={{
+          uri: avatarPicture,
+        }}
+        className='w-16 h-16 rounded-full'
       />
-      <View
-        className={top-0 left-14 absolute  w-3.5 h-3.5 border-2 ${
-          avatarIsConnected ? "bg-green-400" : " bg-red-400"
-        } border-white dark:border-gray-800 rounded-full}
-      ></View>
+      {isConnected && (
+        <View
+          className='top-1 left-14 absolute  w-4 h-4 border-2 
+           bg-green-400
+         border-white dark:border-gray-800 rounded-full'
+        ></View>
+      )}
     </View>
-  );
-};
+  )
+}
 
-export default CustomAvatar;
+export default CustomAvatar

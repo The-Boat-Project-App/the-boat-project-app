@@ -18,6 +18,7 @@ import { useReactiveVar, gql, useQuery } from '@apollo/client'
 import { accessTokenVar } from '../../variables/accessToken'
 import { useGetUserDataQuery } from '../../graphql/graphql'
 import { userDataVar } from '../../variables/userData'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 interface ProfileScreenProps {}
 
@@ -51,7 +52,7 @@ const ProfileScreen: React.FunctionComponent<ProfileScreenProps> = ({}) => {
     return <SignInScreen />
   } else {
     return (
-      <View className='flex-1 items-center text-center mt-10 bg-white'>
+      <SafeAreaView className='flex-1 items-center text-center '>
         <View className='flex-row-reverse'>
           <Image
             className='w-40 h-40 rounded-full mt-20'
@@ -122,7 +123,7 @@ const ProfileScreen: React.FunctionComponent<ProfileScreenProps> = ({}) => {
             <ChevronRightIcon size={20} color={'grey'} style={styles.paddingLeft5} />
           </TouchableOpacity>
         </ScrollView>
-      </View>
+      </SafeAreaView>
     )
   }
 }
