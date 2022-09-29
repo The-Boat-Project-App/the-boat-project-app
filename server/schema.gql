@@ -16,14 +16,41 @@ type LoginResponse {
 }
 
 type Mutation {
+  createNews(newNewsInput: NewsInput!): News!
   createNotes(newNotesInput: NotesInput!): Notes!
+  createPosts(newPostsInput: PostsInput!): Posts!
   createUsers(newUsersInput: UsersInput!): RegisterResponse!
+  deleteNews(id: String!): String!
   deleteNotes(id: String!): String!
+  deletePosts(id: String!): String!
   deleteUsers(id: String!): String!
   loginUsers(UsersLoginInput: UsersInput!): LoginResponse!
   revokeRefreshTokensForUser(userId: String!): Boolean!
+  updateNews(editNewsInput: NewsInput!): News!
   updateNotes(editNotesInput: NotesInput!): Notes!
+  updatePosts(editPostsInput: PostsInput!): Posts!
   updateUsers(editUsersInput: UsersInput!): Users!
+}
+
+"""The News Model"""
+type News {
+  author: String!
+  content: String
+  createdAt: DateTime!
+  id: ID!
+  isActive: Boolean
+  mainPicture: String
+  title: String!
+}
+
+input NewsInput {
+  author: String!
+  content: String
+  createdAt: DateTime
+  id: ID
+  isActive: Boolean
+  mainPicture: String
+  title: String!
 }
 
 """The Notes Model"""
@@ -45,7 +72,38 @@ input NotesInput {
   title: String!
 }
 
+"""The Posts Model"""
+type Posts {
+  author: String!
+  content: String
+  createdAt: DateTime!
+  id: ID!
+  likes: Float
+  mainPicture: String
+  title: String!
+  validated: Boolean
+}
+
+input PostsInput {
+  author: String!
+  content: String
+  createdAt: DateTime
+  id: ID
+  likes: Float
+  mainPicture: String
+  title: String!
+  validated: Boolean
+}
+
 type Query {
+  News(id: String!): News!
+
+  """Get List of News"""
+  NewsList: [News!]!
+  Posts(id: String!): Posts!
+
+  """Get List of Posts"""
+  PostsList: [Posts!]!
   notes(id: String!): Notes!
 
   """Get List of Notes"""

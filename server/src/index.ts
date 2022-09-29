@@ -7,21 +7,22 @@ import { verify } from 'jsonwebtoken'
 import dotenv from 'dotenv'
 dotenv.config()
 import cookieParser from 'cookie-parser'
-import { UsersModel, Users } from './models/users.model'
+import { UsersModel } from './models/users.model'
 import cors from 'cors'
 
 //Resolvers
 import { NotesResolver } from './resolvers/notes.resolver'
 import { UsersResolver } from './resolvers/users.resolver'
-import { resolve } from 'path'
+import { NewsResolver } from './resolvers/news.resolver'
 import { createAccessToken, createRefreshToken } from './resolvers/auth'
 import { sendRefreshToken } from './resolvers/sendRefreshToken'
+import { PostsResolver } from './resolvers/posts.resolver'
 
 const executeMain = async () => {
   dotenv.config()
 
   const schema = await buildSchema({
-    resolvers: [NotesResolver, UsersResolver],
+    resolvers: [NotesResolver, UsersResolver, NewsResolver, PostsResolver],
     emitSchemaFile: true,
     validate: false,
   })
