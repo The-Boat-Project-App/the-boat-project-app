@@ -14,7 +14,7 @@ export const NewsCard: React.FunctionComponent<NewsCardProps> = ({
   content,
 }) => {
   return (
-    <TouchableOpacity className='w-40 p-1'>
+    <TouchableOpacity className='w-40 p-0 ml-3'>
       <Image
         className='rounded-md w-full h-16'
         source={{

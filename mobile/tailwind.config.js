@@ -7,7 +7,11 @@ module.exports = {
     './features/**/*.{js,jsx,ts,tsx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        example: ['ExampleFontFamily'],
+      },
+    },
   },
   plugins: [],
 }

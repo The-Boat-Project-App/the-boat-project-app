@@ -1,11 +1,15 @@
-import { View, Image, TouchableOpacity, Text, useWindowDimensions } from 'react-native'
+import { View, Image, Text, useWindowDimensions, Platform } from 'react-native'
 interface HomeHeaderProps {}
 
 const HomeHeader: React.FunctionComponent<HomeHeaderProps> = ({}) => {
   const { height, width } = useWindowDimensions()
 
   return (
-    <View className='flex-row bg-white pb-2 pr-1'>
+    <View
+      className={`flex-row bg-white ${Platform.OS === 'ios' ? 'pb-0' : 'pb-1'} pr-1 ${
+        Platform.OS === 'ios' ? '-mt-4' : '-mt-1'
+      }`}
+    >
       <View className=' w-1/2'>
         <Image
           source={{
@@ -29,7 +33,7 @@ const HomeHeader: React.FunctionComponent<HomeHeaderProps> = ({}) => {
         </View> */}
       </View>
 
-      <View className='items-end mt-1  w-1/2'>
+      <View className='items-end  w-1/2'>
         <Text className='color-cyan-700 text-xs'>Départ 1ère édition :</Text>
         <Text className='color-cyan-700 text-xs'>23 janvier 2023</Text>
         <View className='flex-row rounded-md p-2 mt-2 ' style={{ backgroundColor: '#139db8' }}>
