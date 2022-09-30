@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { useNavigation } from '@react-navigation/native'
 
@@ -10,30 +10,57 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  RefreshControl,
 } from 'react-native'
 import { API_URL } from 'react-native-dotenv'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { CustomAvatar } from '@components/CustomAvatar/CustomAvatar'
 import HomeHeader from '@components/HomeHeader/HomeHeader'
 import NewsCard from '@components/NewsCard/NewsCard'
-import { useGetAllNewQuery, useGetAllNewsQuery } from '../../graphql/graphql'
+import PostCard from '@components/PostCard/PostCard'
+import { useGetAllNewsQuery, useGetAllPostsQuery } from '../../graphql/graphql'
 
 interface HomeScreenProps {}
 
 const HomeScreen: React.FunctionComponent<HomeScreenProps> = ({}) => {
+  const [refreshing, setRefreshing] = useState<boolean>(false)
+
   const { height, width } = useWindowDimensions()
   const [newList, setNewsList] = useState([])
   const navigation = useNavigation()
-  const { data } = useGetAllNewsQuery()
+  const { data, refetch } = useGetAllNewsQuery()
+  const { data: postsData, refetch: refetchPostsData } = useGetAllPostsQuery()
+
+  const wait = (timeout) => {
+    return new Promise((resolve) => setTimeout(resolve, timeout))
+  }
+  const onRefresh = useCallback(() => {
+    setRefreshing(true)
+
+    wait(2000).then(() => {
+      refetch(), refetchPostsData(), setRefreshing(false)
+    })
+  }, [])
 
   console.log('API_URL in .env', API_URL)
 
   return (
-    <SafeAreaView className='flex-1'>
+    <SafeAreaView className='flex-1 bg-white'>
       <HomeHeader />
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor='#87BC23'
+            colors={['#87BC23', '#139DB8']}
+          />
+        }
+      >
         <View className='justify-center bg-slate-100 '>
-          <Text className='font-bold text-lg color-cyan-900 px-2'>Actualités</Text>
+          <Text className='font-bold text-lg color-cyan-900 ml-3 my-2'>Actualités</Text>
+
           <ScrollView className='' horizontal={true} showsHorizontalScrollIndicator={false}>
             {data?.NewsList.map((newsItem, index) => {
               return (
@@ -87,75 +114,18 @@ const HomeScreen: React.FunctionComponent<HomeScreenProps> = ({}) => {
           <Text className='text-lg font-bold color-cyan-900 mt-2'>Journal de bord</Text>
 
           <ScrollView>
-            <TouchableOpacity className='flex-row bg-white p-2 rounded-xl mb-2'>
-              <View>
-                <Image
-                  className='h-20 w-40 rounded-xl'
-                  source={{
-                    uri: 'https://navivoile.com/wp-content/uploads/2017/03/catamaran-navivoile-croisiere-port-vendres-et-collioure-et-littoral-le-long-de-la-cote-rocheuse-600x600.jpg',
-                  }}
+            {postsData?.PostsList.map((postItem, index) => {
+              return (
+                <PostCard
+                  key={index}
+                  title={postItem.title}
+                  picture={postItem.mainPicture}
+                  content={postItem.content}
+                  likes={postItem.likes}
                 />
-              </View>
-              <View className='w-2/4 pl-3 '>
-                <Text className='font-bold color-cyan-900'>Une mer de plastique</Text>
-                <Text className='text-xs color-cyan-900'>
-                  Nous avaons exploré les côte de Sardainge pour découvir une véritable catastrophe.
-                </Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity className='flex-row bg-white p-2 rounded-xl mb-2'>
-              <View>
-                <Image
-                  className='h-20 w-40 rounded-xl'
-                  source={{
-                    uri: 'https://navivoile.com/wp-content/uploads/2017/03/catamaran-navivoile-croisiere-port-vendres-et-collioure-et-littoral-le-long-de-la-cote-rocheuse-600x600.jpg',
-                  }}
-                />
-              </View>
-              <View className='w-2/4 pl-3'>
-                <Text className='font-bold color-cyan-900'>Une mer de plastique</Text>
-                <Text className='text-xs color-cyan-900'>
-                  Nous avaons exploré les côte de Sardainge pour découvir une véritable catastrophe.
-                </Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity className='flex-row bg-white p-2 rounded-xl mb-2'>
-              <View>
-                <Image
-                  className='h-20 w-40 rounded-xl'
-                  source={{
-                    uri: 'https://navivoile.com/wp-content/uploads/2017/03/catamaran-navivoile-croisiere-port-vendres-et-collioure-et-littoral-le-long-de-la-cote-rocheuse-600x600.jpg',
-                  }}
-                />
-              </View>
-              <View className='w-2/4 pl-3'>
-                <Text className='font-bold color-cyan-900'>Une mer de plastique</Text>
-                <Text className='text-xs color-cyan-900'>
-                  Nous avaons exploré les côte de Sardainge pour découvir une véritable catastrophe.
-                </Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity className='flex-row bg-white p-2 rounded-xl mb-2'>
-              <View>
-                <Image
-                  className='h-20 w-40 rounded-xl'
-                  source={{
-                    uri: 'https://navivoile.com/wp-content/uploads/2017/03/catamaran-navivoile-croisiere-port-vendres-et-collioure-et-littoral-le-long-de-la-cote-rocheuse-600x600.jpg',
-                  }}
-                />
-              </View>
-              <View className='w-2/4 pl-3'>
-                <Text className='font-bold color-cyan-900'>Une mer de plastique</Text>
-                <Text className='text-xs color-cyan-900'>
-                  Nous avaons exploré les côte de Sardainge pour découvir une véritable catastrophe.
-                </Text>
-              </View>
-            </TouchableOpacity>
+              )
+            })}
           </ScrollView>
-          {/* <Text className='font-bold text-xl'>Au boulot ! ⛵</Text>
-        <CustomButton buttonTitle='Fetcher le serveur' onPress={fetchData} />
-        <Text>{serverSurprise}</Text>
-        <StatusBar style='auto' /> */}
         </View>
       </ScrollView>
     </SafeAreaView>

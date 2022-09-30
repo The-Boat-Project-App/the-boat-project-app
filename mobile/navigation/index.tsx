@@ -5,10 +5,11 @@ import HomeStackNavigator from './HomeStack'
 import { setAccessToken, getRefreshToken } from 'accessToken'
 import LottieView from 'lottie-react-native'
 import { userDataVar } from '../variables/userData'
+import * as NavigationBar from 'expo-navigation-bar'
 
 const RootNavigator = () => {
   const [loading, setLoading] = useState(true)
-
+  NavigationBar.setBackgroundColorAsync('white')
   useEffect(() => {
     const refreshToken = async () => {
       const refreshToken = await getRefreshToken()

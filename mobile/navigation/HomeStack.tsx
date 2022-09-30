@@ -23,7 +23,7 @@ const HomeStack = createNativeStackNavigator<HomeStackNavigatorParamList>()
 const HomeStackNavigator = () => {
   return (
     <SafeAreaProvider>
-      <StatusBar style='light' backgroundColor='#0C617D' />
+      <StatusBar style='dark' backgroundColor='white' />
 
       <HomeStack.Navigator
         screenOptions={{

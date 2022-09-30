@@ -29,14 +29,17 @@ export type Mutation = {
   __typename?: 'Mutation';
   createNews: News;
   createNotes: Notes;
+  createPosts: Posts;
   createUsers: RegisterResponse;
   deleteNews: Scalars['String'];
   deleteNotes: Scalars['String'];
+  deletePosts: Scalars['String'];
   deleteUsers: Scalars['String'];
   loginUsers: LoginResponse;
   revokeRefreshTokensForUser: Scalars['Boolean'];
   updateNews: News;
   updateNotes: Notes;
+  updatePosts: Posts;
   updateUsers: Users;
 };
 
@@ -51,6 +54,11 @@ export type MutationCreateNotesArgs = {
 };
 
 
+export type MutationCreatePostsArgs = {
+  newPostsInput: PostsInput;
+};
+
+
 export type MutationCreateUsersArgs = {
   newUsersInput: UsersInput;
 };
@@ -62,6 +70,11 @@ export type MutationDeleteNewsArgs = {
 
 
 export type MutationDeleteNotesArgs = {
+  id: Scalars['String'];
+};
+
+
+export type MutationDeletePostsArgs = {
   id: Scalars['String'];
 };
 
@@ -88,6 +101,11 @@ export type MutationUpdateNewsArgs = {
 
 export type MutationUpdateNotesArgs = {
   editNotesInput: NotesInput;
+};
+
+
+export type MutationUpdatePostsArgs = {
+  editPostsInput: PostsInput;
 };
 
 
@@ -137,11 +155,38 @@ export type NotesInput = {
   title: Scalars['String'];
 };
 
+/** The Posts Model */
+export type Posts = {
+  __typename?: 'Posts';
+  author: Scalars['String'];
+  content?: Maybe<Scalars['String']>;
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  likes?: Maybe<Scalars['Float']>;
+  mainPicture?: Maybe<Scalars['String']>;
+  title: Scalars['String'];
+  validated?: Maybe<Scalars['Boolean']>;
+};
+
+export type PostsInput = {
+  author: Scalars['String'];
+  content?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  id?: InputMaybe<Scalars['ID']>;
+  likes?: InputMaybe<Scalars['Float']>;
+  mainPicture?: InputMaybe<Scalars['String']>;
+  title: Scalars['String'];
+  validated?: InputMaybe<Scalars['Boolean']>;
+};
+
 export type Query = {
   __typename?: 'Query';
   News: News;
   /** Get List of News */
   NewsList: Array<News>;
+  Posts: Posts;
+  /** Get List of Posts */
+  PostsList: Array<Posts>;
   notes: Notes;
   /** Get List of Notes */
   notesList: Array<Notes>;
@@ -153,6 +198,11 @@ export type Query = {
 
 
 export type QueryNewsArgs = {
+  id: Scalars['String'];
+};
+
+
+export type QueryPostsArgs = {
   id: Scalars['String'];
 };
 
@@ -220,6 +270,11 @@ export type GetAllNewsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetAllNewsQuery = { __typename?: 'Query', NewsList: Array<{ __typename?: 'News', id: string, title: string, author: string, content?: string | null, mainPicture?: string | null, createdAt: any, isActive?: boolean | null }> };
 
+export type GetAllPostsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllPostsQuery = { __typename?: 'Query', PostsList: Array<{ __typename?: 'Posts', id: string, title: string, author: string, content?: string | null, mainPicture?: string | null, createdAt: any, validated?: boolean | null, likes?: number | null }> };
+
 export type GetAllUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -285,6 +340,47 @@ export function useGetAllNewsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryH
 export type GetAllNewsQueryHookResult = ReturnType<typeof useGetAllNewsQuery>;
 export type GetAllNewsLazyQueryHookResult = ReturnType<typeof useGetAllNewsLazyQuery>;
 export type GetAllNewsQueryResult = Apollo.QueryResult<GetAllNewsQuery, GetAllNewsQueryVariables>;
+export const GetAllPostsDocument = gql`
+    query getAllPosts {
+  PostsList {
+    id
+    title
+    author
+    content
+    mainPicture
+    createdAt
+    validated
+    likes
+  }
+}
+    `;
+
+/**
+ * __useGetAllPostsQuery__
+ *
+ * To run a query within a React component, call `useGetAllPostsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllPostsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllPostsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetAllPostsQuery, GetAllPostsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<GetAllPostsQuery, GetAllPostsQueryVariables>(GetAllPostsDocument, options);
+      }
+export function useGetAllPostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetAllPostsQuery, GetAllPostsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<GetAllPostsQuery, GetAllPostsQueryVariables>(GetAllPostsDocument, options);
+        }
+export type GetAllPostsQueryHookResult = ReturnType<typeof useGetAllPostsQuery>;
+export type GetAllPostsLazyQueryHookResult = ReturnType<typeof useGetAllPostsLazyQuery>;
+export type GetAllPostsQueryResult = Apollo.QueryResult<GetAllPostsQuery, GetAllPostsQueryVariables>;
 export const GetAllUsersDocument = gql`
     query getAllUsers {
   usersList {
