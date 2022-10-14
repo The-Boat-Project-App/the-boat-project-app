@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import RootNavigator from './navigation'
 import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client'

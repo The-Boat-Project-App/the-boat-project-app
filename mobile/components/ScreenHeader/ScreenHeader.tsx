@@ -1,8 +1,8 @@
 import { View, Image, Text, useWindowDimensions, Platform } from 'react-native'
-interface HomeHeaderProps {}
+interface ScreenHeaderProps {}
 
-const HomeHeader: React.FunctionComponent<HomeHeaderProps> = ({}) => {
-  const { width } = useWindowDimensions()
+const ScreenHeader: React.FunctionComponent<HomeHeaderProps> = ({}) => {
+  const { height, width } = useWindowDimensions()
 
   return (
     <View
