@@ -13,8 +13,10 @@ export const NewsCard: React.FunctionComponent<NewsCardProps> = ({
   title,
   content,
 }) => {
+  //* Regex to shorten text content
+  const shortenedContent = content.replace(/^(.{60}[^\s]*).*/, '$1') + ' ...'
   return (
-    <TouchableOpacity className='w-40 p-0 ml-3'>
+    <TouchableOpacity className='w-40 p-0 ml-3 '>
       <Image
         className='rounded-md w-full h-16'
         source={{
@@ -23,7 +25,7 @@ export const NewsCard: React.FunctionComponent<NewsCardProps> = ({
       />
       <Text className='font-bold color-cyan-900 text-xs'>{date}</Text>
       <Text className='font-bold color-cyan-900'>{title}</Text>
-      <Text className='color-cyan-900'>{content}</Text>
+      <Text className='color-cyan-900 '>{shortenedContent}</Text>
     </TouchableOpacity>
   )
 }

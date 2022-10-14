@@ -30,7 +30,7 @@ const BottomTabs = () => {
           } else if (route.name === 'Profile') {
             return <UserIcon size={size} color={color} />
           } else if (route.name === 'AddPost') {
-            return <PlusCircleIconOutline size={size * 1.9} color={color} />
+            return <PlusCircleIconOutline size={size * 1.4} color={color} />
           } else if (route.name === 'Map') {
             return <MapIcon size={size} color={color} />
           }
@@ -55,9 +55,6 @@ const BottomTabs = () => {
         tabBarActiveTintColor: '#87BC23',
         tabBarInactiveTintColor: '#0C617D',
         headerShown: false,
-        tabBarStyle: {
-          paddingTop: 5,
-        },
       })}
     >
       <Tab.Screen
@@ -78,7 +75,7 @@ const BottomTabs = () => {
         name='AddPost'
         component={AddPostScreen}
         options={{
-          tabBarLabel: '',
+          tabBarLabel: 'Publier',
         }}
       />
       <Tab.Screen

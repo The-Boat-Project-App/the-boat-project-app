@@ -1,6 +1,9 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
+import { FlatList } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
 import { useNavigation } from '@react-navigation/native'
+import moment from 'moment'
+import localization from 'moment/locale/fr'
 
 import {
   useWindowDimensions,
@@ -43,6 +46,8 @@ const HomeScreen: React.FunctionComponent<HomeScreenProps> = ({}) => {
   }, [])
 
   console.log('API_URL in .env', API_URL)
+  // ! Changement locale Momentjs en global en même temps que la langue ?
+  moment.updateLocale('fr', localization)
 
   return (
     <SafeAreaView className='flex-1 bg-white'>
@@ -58,22 +63,48 @@ const HomeScreen: React.FunctionComponent<HomeScreenProps> = ({}) => {
           />
         }
       >
-        <View className='justify-center bg-slate-100 '>
+        <View className='justify-center bg-white '>
           <Text className='font-bold text-lg color-cyan-900 ml-3 my-2'>Actualités</Text>
-
-          <ScrollView className='' horizontal={true} showsHorizontalScrollIndicator={false}>
+          {data && (
+            <FlatList
+              horizontal={true}
+              inverted={true}
+              showsHorizontalScrollIndicator={false}
+              keyExtractor={(item) => item.id}
+              data={data.NewsList}
+              renderItem={({ item, index }) => (
+                <NewsCard
+                  key={index}
+                  title={item.title}
+                  picture={item.mainPicture}
+                  content={item.content}
+                  date={
+                    moment().diff(item.createdAt, 'days') <= 2
+                      ? moment(item.createdAt).fromNow()
+                      : moment(item.createdAt).format('LL')
+                  }
+                />
+              )}
+            />
+          )}
+          {/* <ScrollView className='' horizontal={true} showsHorizontalScrollIndicator={false}>
             {data?.NewsList.map((newsItem, index) => {
+              const formattedDate =
+                moment().diff(newsItem.createdAt, 'days') <= 2
+                  ? moment(newsItem.createdAt).fromNow()
+                  : moment(newsItem.createdAt).format('LL')
+
               return (
                 <NewsCard
                   key={index}
                   title={newsItem.title}
                   picture={newsItem.mainPicture}
                   content={newsItem.content}
-                  date={newsItem.createdAt}
+                  date={formattedDate}
                 />
               )
-            })}
-          </ScrollView>
+            }).reverse()}
+          </ScrollView> */}
           <TouchableOpacity
             className='p-2  ml-2 mr-2 mt-3 rounded-xl bg-white'
             onPress={() => navigation.navigate('Map')}
@@ -85,7 +116,7 @@ const HomeScreen: React.FunctionComponent<HomeScreenProps> = ({}) => {
               }}
             />
           </TouchableOpacity>
-          <Text className='text-lg font-bold color-cyan-900 mt-2'>
+          <Text className='text-lg font-bold color-cyan-900 mt-2 ml-3 my-2'>
             Les compagnons de la Méditérranée
           </Text>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -109,15 +140,36 @@ const HomeScreen: React.FunctionComponent<HomeScreenProps> = ({}) => {
               isConnected={true}
               avatarPicture='https://images.generated.photos/2mP6i-lgiMAV6cANGDvtzOUmmpxBlXmgPTDbPXpXFXI/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LnBob3Rvcy92M18w/OTEwNjQwLmpwZw.jpg'
             />
+            <CustomAvatar
+              isConnected={true}
+              avatarPicture='https://images.generated.photos/2mP6i-lgiMAV6cANGDvtzOUmmpxBlXmgPTDbPXpXFXI/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LnBob3Rvcy92M18w/OTEwNjQwLmpwZw.jpg'
+            />
+            <CustomAvatar
+              isConnected={true}
+              avatarPicture='https://images.generated.photos/2mP6i-lgiMAV6cANGDvtzOUmmpxBlXmgPTDbPXpXFXI/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LnBob3Rvcy92M18w/OTEwNjQwLmpwZw.jpg'
+            />
+            <CustomAvatar
+              isConnected={true}
+              avatarPicture='https://images.generated.photos/2mP6i-lgiMAV6cANGDvtzOUmmpxBlXmgPTDbPXpXFXI/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LnBob3Rvcy92M18w/OTEwNjQwLmpwZw.jpg'
+            />
+            <CustomAvatar
+              isConnected={true}
+              avatarPicture='https://images.generated.photos/2mP6i-lgiMAV6cANGDvtzOUmmpxBlXmgPTDbPXpXFXI/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LnBob3Rvcy92M18w/OTEwNjQwLmpwZw.jpg'
+            />
+            <CustomAvatar
+              isConnected={true}
+              avatarPicture='https://images.generated.photos/2mP6i-lgiMAV6cANGDvtzOUmmpxBlXmgPTDbPXpXFXI/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LnBob3Rvcy92M18w/OTEwNjQwLmpwZw.jpg'
+            />
           </ScrollView>
 
-          <Text className='text-lg font-bold color-cyan-900 mt-2'>Journal de bord</Text>
+          <Text className='text-lg font-bold color-cyan-900 mt-2 ml-3 my-2'>Journal de bord</Text>
 
           <ScrollView>
             {postsData?.PostsList.map((postItem, index) => {
               return (
                 <PostCard
                   key={index}
+                  id={postItem.id}
                   title={postItem.title}
                   picture={postItem.mainPicture}
                   content={postItem.content}
