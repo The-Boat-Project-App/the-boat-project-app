@@ -15,7 +15,7 @@ export const CustomAvatar: React.FunctionComponent<CustomAvatarProps> = ({
         source={{
           uri: avatarPicture,
         }}
-        className='w-16 h-16 rounded-full'
+        className='w-16 h-16 rounded-full border-2 border-white'
       />
       {isConnected && (
         <View

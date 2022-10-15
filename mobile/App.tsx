@@ -5,6 +5,7 @@ import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@ap
 import { setContext } from '@apollo/client/link/context'
 import { LogBox } from 'react-native'
 LogBox.ignoreAllLogs()
+import { NativeBaseProvider } from 'native-base'
 
 import { getAccessToken } from 'accessToken'
 
@@ -35,8 +36,10 @@ export default function App() {
 
   return (
     <ApolloProvider client={client}>
-      <RootNavigator />
-      <StatusBar style='auto' />
+      <NativeBaseProvider>
+        <RootNavigator />
+        <StatusBar style='auto' />
+      </NativeBaseProvider>
     </ApolloProvider>
   )
 }
