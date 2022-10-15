@@ -9,11 +9,10 @@ import Applause from '@components/Applause/Applause'
 import { BookmarkIcon } from 'react-native-heroicons/solid'
 import { BookmarkIcon as BookmarkIconOutline } from 'react-native-heroicons/outline'
 
-interface PostScreenProps {}
+interface NewsScreenProps {}
 
-const PostScreen: React.FunctionComponent<PostScreenProps> = ({}) => {
+const NewsScreen: React.FunctionComponent<NewsScreenProps> = ({}) => {
   const [refreshing, setRefreshing] = useState<boolean>(false)
-  const [isBookmarked, setIsBookmarked] = useState<boolean>(false)
 
   const { height, width } = useWindowDimensions()
   const wait = (timeout) => {
@@ -43,24 +42,8 @@ const PostScreen: React.FunctionComponent<PostScreenProps> = ({}) => {
       >
         <View className='justify-center bg-white px-3 '>
           <Text className='font-bold text-lg color-cyan-900 ml-3 mb-4 text-center'>
-            Une mer de plastique
+            On part bientôt !
           </Text>
-          <View className='self-end mr-2 -mb-4 z-40'>
-            {isBookmarked ? (
-              <BookmarkIcon
-                size={30}
-                onPress={() => setIsBookmarked(!isBookmarked)}
-                color='#0C617D'
-              />
-            ) : (
-              <BookmarkIconOutline
-                size={30}
-                fill='white'
-                onPress={() => setIsBookmarked(!isBookmarked)}
-                color='#0C617D'
-              />
-            )}
-          </View>
           <Image
             className='h-40 rounded-md '
             source={{
@@ -114,4 +97,4 @@ const PostScreen: React.FunctionComponent<PostScreenProps> = ({}) => {
   )
 }
 
-export default PostScreen
+export default NewsScreen

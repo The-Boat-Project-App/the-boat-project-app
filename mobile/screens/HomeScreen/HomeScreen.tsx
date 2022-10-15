@@ -1,5 +1,4 @@
 import { useState, useCallback, useEffect } from 'react'
-import { FlatList } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
 import { useNavigation } from '@react-navigation/native'
 import moment from 'moment'
@@ -9,6 +8,7 @@ import {
   useWindowDimensions,
   Text,
   View,
+  FlatList,
   Image,
   StyleSheet,
   TouchableOpacity,
