@@ -1,0 +1,3 @@
+mutation addLikes($id: String!) {
+  addLikes(id: $id)
+}

@@ -6,6 +6,14 @@ import { setContext } from '@apollo/client/link/context'
 import { LogBox } from 'react-native'
 LogBox.ignoreAllLogs()
 import { NativeBaseProvider } from 'native-base'
+import {
+  useFonts,
+  Raleway_400Regular,
+  Raleway_300Light,
+  Raleway_500Medium,
+  Raleway_600SemiBold,
+  Raleway_700Bold,
+} from '@expo-google-fonts/raleway'
 
 import { getAccessToken } from 'accessToken'
 
@@ -34,12 +42,21 @@ export default function App() {
     credentials: 'include',
   })
 
-  return (
-    <ApolloProvider client={client}>
-      <NativeBaseProvider>
-        <RootNavigator />
-        <StatusBar style='auto' />
-      </NativeBaseProvider>
-    </ApolloProvider>
-  )
+  let [fontsLoaded] = useFonts({
+    Raleway_400Regular,
+    Raleway_300Light,
+    Raleway_500Medium,
+    Raleway_600SemiBold,
+    Raleway_700Bold,
+  })
+  if (fontsLoaded) {
+    return (
+      <ApolloProvider client={client}>
+        <NativeBaseProvider>
+          <RootNavigator />
+          <StatusBar style='auto' />
+        </NativeBaseProvider>
+      </ApolloProvider>
+    )
+  }
 }

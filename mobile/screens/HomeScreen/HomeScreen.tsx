@@ -21,6 +21,7 @@ import { CustomAvatar } from '@components/CustomAvatar/CustomAvatar'
 import HomeHeader from '@components/HomeHeader/HomeHeader'
 import NewsCard from '@components/NewsCard/NewsCard'
 import PostCard from '@components/PostCard/PostCard'
+import ThemesDisplay from '@components/ThemesDisplay/ThemesDisplay'
 import { useGetAllNewsQuery, useGetAllPostsQuery } from '../../graphql/graphql'
 
 interface HomeScreenProps {}
@@ -64,7 +65,9 @@ const HomeScreen: React.FunctionComponent<HomeScreenProps> = ({}) => {
         }
       >
         <View className='justify-center bg-white '>
-          <Text className='font-bold text-lg color-cyan-900 ml-3 my-2'>Actualités</Text>
+          <Text className='text-lg color-cyan-900 ml-3 my-2 text-xl  color-deepBlue font-ralewayBold'>
+            Actualités
+          </Text>
           {data && (
             <FlatList
               horizontal={true}
@@ -105,7 +108,7 @@ const HomeScreen: React.FunctionComponent<HomeScreenProps> = ({}) => {
               )
             }).reverse()}
           </ScrollView> */}
-          <TouchableOpacity
+          {/* <TouchableOpacity
             className='p-2  ml-2 mr-2 mt-3 rounded-xl bg-white'
             onPress={() => navigation.navigate('Map')}
           >
@@ -115,8 +118,8 @@ const HomeScreen: React.FunctionComponent<HomeScreenProps> = ({}) => {
                 uri: 'https://media.peche.com/src/images/news/articles/ima-image-31469.png',
               }}
             />
-          </TouchableOpacity>
-          <Text className='text-lg font-bold color-cyan-900 mt-2 ml-3 my-2'>
+          </TouchableOpacity> */}
+          <Text className='text-xl  color-deepBlue font-ralewayBold mt-2 ml-3 my-2'>
             Les compagnons de la Méditérranée
           </Text>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -126,15 +129,15 @@ const HomeScreen: React.FunctionComponent<HomeScreenProps> = ({}) => {
             />
             <CustomAvatar
               isConnected={false}
-              avatarPicture='https://images.generated.photos/2mP6i-lgiMAV6cANGDvtzOUmmpxBlXmgPTDbPXpXFXI/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LnBob3Rvcy92M18w/OTEwNjQwLmpwZw.jpg'
+              avatarPicture='https://www.mensjournal.com/wp-content/uploads/mf/1280-selfie.jpg?w=900&quality=86&strip=all'
             />
             <CustomAvatar
               isConnected={true}
-              avatarPicture='https://images.generated.photos/2mP6i-lgiMAV6cANGDvtzOUmmpxBlXmgPTDbPXpXFXI/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LnBob3Rvcy92M18w/OTEwNjQwLmpwZw.jpg'
+              avatarPicture='https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg?cs=srgb&dl=pexels-italo-melo-2379005.jpg&fm=jpg'
             />
             <CustomAvatar
               isConnected={true}
-              avatarPicture='https://images.generated.photos/2mP6i-lgiMAV6cANGDvtzOUmmpxBlXmgPTDbPXpXFXI/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LnBob3Rvcy92M18w/OTEwNjQwLmpwZw.jpg'
+              avatarPicture='https://www.kcl.ac.uk/ImportedImages/Schools/Business/news-images/Elisa-Russo500x499.xe1f2b6fd.jpg?w=376&h=375&crop=368,208,8,35'
             />
             <CustomAvatar
               isConnected={true}
@@ -161,23 +164,27 @@ const HomeScreen: React.FunctionComponent<HomeScreenProps> = ({}) => {
               avatarPicture='https://images.generated.photos/2mP6i-lgiMAV6cANGDvtzOUmmpxBlXmgPTDbPXpXFXI/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LnBob3Rvcy92M18w/OTEwNjQwLmpwZw.jpg'
             />
           </ScrollView>
-
-          <Text className='text-lg font-bold color-cyan-900 mt-2 ml-3 my-2'>Journal de bord</Text>
-
-          <ScrollView>
+          <Text className='text-xl font-bold color-cyan-900 mt-2 ml-3 my-2 color-deepBlue font-ralewayBold'>
+            Journal de bord
+          </Text>
+          <ScrollView className='ml-3 mr-3'>
             {postsData?.PostsList.map((postItem, index) => {
-              return (
-                <PostCard
-                  key={index}
-                  id={postItem.id}
-                  title={postItem.title}
-                  picture={postItem.mainPicture}
-                  content={postItem.content}
-                  likes={postItem.likes}
-                />
-              )
+              if (postItem.validated == 'validated') {
+                return (
+                  <PostCard
+                    key={index}
+                    id={postItem.id}
+                    title={postItem.title}
+                    picture={postItem.mainPicture}
+                    content={postItem.content}
+                    likes={postItem.likes}
+                    comments={postItem.comments}
+                  />
+                )
+              }
             })}
           </ScrollView>
+          <ThemesDisplay />
         </View>
       </ScrollView>
     </SafeAreaView>

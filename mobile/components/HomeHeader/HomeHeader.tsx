@@ -33,12 +33,12 @@ const HomeHeader: React.FunctionComponent<HomeHeaderProps> = ({}) => {
         </View> */}
       </View>
 
-      <View className='items-end  w-1/2'>
-        <Text className='color-cyan-700 text-xs'>Départ 1ère édition :</Text>
-        <Text className='color-cyan-700 text-xs'>23 janvier 2023</Text>
-        <View className='flex-row rounded-md p-2 mt-2 ' style={{ backgroundColor: '#139db8' }}>
-          <Text className='color-white font-bold '>J- 159</Text>
-          <Text className='color-white'> 18 : 30 : 22</Text>
+      <View className='items-end  w-1/2  '>
+        <Text className='color-deepBlue font-raleway text-xs '>Départ 1ère édition :</Text>
+        <Text className='color-deepBlue text-xs font-raleway'>23 janvier 2023</Text>
+        <View className='flex-row rounded-md p-2 mt-2 bg-clearBlue'>
+          <Text className='color-white font-bold font-raleway'>J- 159</Text>
+          <Text className='color-white font-raleway'> 18 : 30 : 22</Text>
         </View>
       </View>
     </View>

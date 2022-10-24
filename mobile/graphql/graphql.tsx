@@ -17,9 +17,23 @@ export type Scalars = {
   DateTime: any;
 };
 
+export type Comment = {
+  author: Scalars['String'];
+  content: Scalars['String'];
+  date: Scalars['DateTime'];
+};
+
+export type CommentObject = {
+  __typename?: 'CommentObject';
+  author: Scalars['String'];
+  content: Scalars['String'];
+  date: Scalars['DateTime'];
+};
+
 export type LoginResponse = {
   __typename?: 'LoginResponse';
   accessToken: Scalars['String'];
+  avatar: Scalars['String'];
   firstName: Scalars['String'];
   lastName: Scalars['String'];
   refreshToken: Scalars['String'];
@@ -27,9 +41,11 @@ export type LoginResponse = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addLikes: Scalars['String'];
   createNews: News;
   createNotes: Notes;
   createPosts: Posts;
+  createThemes: ThemeCreatedResponse;
   createUsers: RegisterResponse;
   deleteNews: Scalars['String'];
   deleteNotes: Scalars['String'];
@@ -41,6 +57,11 @@ export type Mutation = {
   updateNotes: Notes;
   updatePosts: Posts;
   updateUsers: Users;
+};
+
+
+export type MutationAddLikesArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -56,6 +77,11 @@ export type MutationCreateNotesArgs = {
 
 export type MutationCreatePostsArgs = {
   newPostsInput: PostsInput;
+};
+
+
+export type MutationCreateThemesArgs = {
+  newThemesInput: ThemesInput;
 };
 
 
@@ -159,24 +185,30 @@ export type NotesInput = {
 export type Posts = {
   __typename?: 'Posts';
   author: Scalars['String'];
+  comments: Array<CommentObject>;
   content?: Maybe<Scalars['String']>;
   createdAt: Scalars['DateTime'];
   id: Scalars['ID'];
+  intro: Scalars['String'];
   likes?: Maybe<Scalars['Float']>;
   mainPicture?: Maybe<Scalars['String']>;
+  submitted?: Maybe<Scalars['Boolean']>;
   title: Scalars['String'];
-  validated?: Maybe<Scalars['Boolean']>;
+  validated?: Maybe<Scalars['String']>;
 };
 
 export type PostsInput = {
   author: Scalars['String'];
+  comments?: InputMaybe<Array<Comment>>;
   content?: InputMaybe<Scalars['String']>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   id?: InputMaybe<Scalars['ID']>;
+  intro: Scalars['String'];
   likes?: InputMaybe<Scalars['Float']>;
   mainPicture?: InputMaybe<Scalars['String']>;
+  submitted?: InputMaybe<Scalars['Boolean']>;
   title: Scalars['String'];
-  validated?: InputMaybe<Scalars['Boolean']>;
+  validated?: InputMaybe<Scalars['String']>;
 };
 
 export type Query = {
@@ -219,9 +251,30 @@ export type QueryUsersArgs = {
 export type RegisterResponse = {
   __typename?: 'RegisterResponse';
   accessToken: Scalars['String'];
+  avatar: Scalars['String'];
   firstName: Scalars['String'];
   lastName: Scalars['String'];
   refreshToken: Scalars['String'];
+};
+
+export type Subscription = {
+  __typename?: 'Subscription';
+  likeAdded: Posts;
+};
+
+export type ThemeCreatedResponse = {
+  __typename?: 'ThemeCreatedResponse';
+  desc: Scalars['String'];
+  id: Scalars['String'];
+  intro: Scalars['String'];
+  name: Scalars['String'];
+};
+
+export type ThemesInput = {
+  desc?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  intro?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
 };
 
 /** The Users Model */
@@ -248,7 +301,7 @@ export type Users = {
 
 export type UsersInput = {
   active?: InputMaybe<Scalars['Boolean']>;
-  app_lang?: InputMaybe<Scalars['String']>;
+  appLang?: InputMaybe<Scalars['String']>;
   audio?: InputMaybe<Scalars['String']>;
   avatar?: InputMaybe<Scalars['String']>;
   bio?: InputMaybe<Scalars['String']>;
@@ -265,6 +318,20 @@ export type UsersInput = {
   updatedAt?: InputMaybe<Scalars['DateTime']>;
 };
 
+export type AddLikesMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type AddLikesMutation = { __typename?: 'Mutation', addLikes: string };
+
+export type CreateNewPostMutationVariables = Exact<{
+  newPostsInput: PostsInput;
+}>;
+
+
+export type CreateNewPostMutation = { __typename?: 'Mutation', createPosts: { __typename?: 'Posts', title: string, intro: string, content?: string | null, author: string, mainPicture?: string | null, likes?: number | null, submitted?: boolean | null, validated?: string | null } };
+
 export type GetAllNewsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -273,7 +340,7 @@ export type GetAllNewsQuery = { __typename?: 'Query', NewsList: Array<{ __typena
 export type GetAllPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllPostsQuery = { __typename?: 'Query', PostsList: Array<{ __typename?: 'Posts', id: string, title: string, author: string, content?: string | null, mainPicture?: string | null, createdAt: any, validated?: boolean | null, likes?: number | null }> };
+export type GetAllPostsQuery = { __typename?: 'Query', PostsList: Array<{ __typename?: 'Posts', id: string, title: string, author: string, content?: string | null, mainPicture?: string | null, createdAt: any, validated?: string | null, likes?: number | null, comments: Array<{ __typename?: 'CommentObject', author: string, content: string, date: any }> }> };
 
 export type GetAllUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -290,16 +357,87 @@ export type LoginMutationVariables = Exact<{
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', loginUsers: { __typename?: 'LoginResponse', accessToken: string, refreshToken: string, firstName: string, lastName: string } };
+export type LoginMutation = { __typename?: 'Mutation', loginUsers: { __typename?: 'LoginResponse', accessToken: string, refreshToken: string, firstName: string, lastName: string, avatar: string } };
 
 export type RegisterMutationVariables = Exact<{
   newUsersInput: UsersInput;
 }>;
 
 
-export type RegisterMutation = { __typename?: 'Mutation', createUsers: { __typename?: 'RegisterResponse', accessToken: string, refreshToken: string, firstName: string, lastName: string } };
+export type RegisterMutation = { __typename?: 'Mutation', createUsers: { __typename?: 'RegisterResponse', accessToken: string, refreshToken: string, firstName: string, lastName: string, avatar: string } };
 
 
+export const AddLikesDocument = gql`
+    mutation addLikes($id: String!) {
+  addLikes(id: $id)
+}
+    `;
+export type AddLikesMutationFn = Apollo.MutationFunction<AddLikesMutation, AddLikesMutationVariables>;
+
+/**
+ * __useAddLikesMutation__
+ *
+ * To run a mutation, you first call `useAddLikesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddLikesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addLikesMutation, { data, loading, error }] = useAddLikesMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useAddLikesMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AddLikesMutation, AddLikesMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<AddLikesMutation, AddLikesMutationVariables>(AddLikesDocument, options);
+      }
+export type AddLikesMutationHookResult = ReturnType<typeof useAddLikesMutation>;
+export type AddLikesMutationResult = Apollo.MutationResult<AddLikesMutation>;
+export type AddLikesMutationOptions = Apollo.BaseMutationOptions<AddLikesMutation, AddLikesMutationVariables>;
+export const CreateNewPostDocument = gql`
+    mutation createNewPost($newPostsInput: PostsInput!) {
+  createPosts(newPostsInput: $newPostsInput) {
+    title
+    intro
+    content
+    author
+    mainPicture
+    likes
+    submitted
+    validated
+  }
+}
+    `;
+export type CreateNewPostMutationFn = Apollo.MutationFunction<CreateNewPostMutation, CreateNewPostMutationVariables>;
+
+/**
+ * __useCreateNewPostMutation__
+ *
+ * To run a mutation, you first call `useCreateNewPostMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateNewPostMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createNewPostMutation, { data, loading, error }] = useCreateNewPostMutation({
+ *   variables: {
+ *      newPostsInput: // value for 'newPostsInput'
+ *   },
+ * });
+ */
+export function useCreateNewPostMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateNewPostMutation, CreateNewPostMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<CreateNewPostMutation, CreateNewPostMutationVariables>(CreateNewPostDocument, options);
+      }
+export type CreateNewPostMutationHookResult = ReturnType<typeof useCreateNewPostMutation>;
+export type CreateNewPostMutationResult = Apollo.MutationResult<CreateNewPostMutation>;
+export type CreateNewPostMutationOptions = Apollo.BaseMutationOptions<CreateNewPostMutation, CreateNewPostMutationVariables>;
 export const GetAllNewsDocument = gql`
     query getAllNews {
   NewsList {
@@ -351,6 +489,11 @@ export const GetAllPostsDocument = gql`
     createdAt
     validated
     likes
+    comments {
+      author
+      content
+      date
+    }
   }
 }
     `;
@@ -460,6 +603,7 @@ export const LoginDocument = gql`
     refreshToken
     firstName
     lastName
+    avatar
   }
 }
     `;
@@ -496,6 +640,7 @@ export const RegisterDocument = gql`
     refreshToken
     firstName
     lastName
+    avatar
   }
 }
     `;

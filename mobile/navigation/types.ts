@@ -2,6 +2,7 @@ export type HomeStackNavigatorParamList = {
   SignIn: undefined
   SignUp: undefined
   Post: undefined
+  PreviewPost: undefined
   News: undefined
   BottomTabs: undefined
   Dev: undefined

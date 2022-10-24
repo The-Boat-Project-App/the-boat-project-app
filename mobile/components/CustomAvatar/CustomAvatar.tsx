@@ -15,12 +15,14 @@ export const CustomAvatar: React.FunctionComponent<CustomAvatarProps> = ({
         source={{
           uri: avatarPicture,
         }}
-        className='w-16 h-16 rounded-full border-2 border-white'
+        className={`w-16 h-16 rounded-full border-2 ${
+          isConnected ? 'border-white' : 'border-white'
+        }`}
       />
       {isConnected && (
         <View
-          className='top-1 left-14 absolute  w-4 h-4 border-2 
-           bg-green-400
+          className='top-1 left-12 absolute  w-4 h-4 border-2 
+           bg-green
          border-white dark:border-gray-800 rounded-full'
         ></View>
       )}
