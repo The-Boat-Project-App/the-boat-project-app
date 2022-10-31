@@ -19,6 +19,7 @@ import { API_URL } from 'react-native-dotenv'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { CustomAvatar } from '@components/CustomAvatar/CustomAvatar'
 import HomeHeader from '@components/HomeHeader/HomeHeader'
+import SeeAll from '@components/SeeAll/SeeAll'
 import NewsCard from '@components/NewsCard/NewsCard'
 import PostCard from '@components/PostCard/PostCard'
 import ThemesDisplay from '@components/ThemesDisplay/ThemesDisplay'
@@ -40,7 +41,7 @@ const HomeScreen: React.FunctionComponent<HomeScreenProps> = ({}) => {
   }
   const onRefresh = useCallback(() => {
     setRefreshing(true)
-
+    console.log('postsData', postsData)
     wait(2000).then(() => {
       refetch(), refetchPostsData(), setRefreshing(false)
     })
@@ -65,9 +66,16 @@ const HomeScreen: React.FunctionComponent<HomeScreenProps> = ({}) => {
         }
       >
         <View className='justify-center bg-white '>
-          <Text className='text-lg color-cyan-900 ml-3 my-2 text-xl  color-deepBlue font-ralewayBold'>
-            Actualités
-          </Text>
+          <View className='flex flex-row space-x-10 w-screen  justify-between'>
+            <View className='w-1/2 '>
+              <Text className='text-xl  color-deepBlue font-ralewayBold mt-2 ml-3 my-2'>
+                Actualités
+              </Text>
+            </View>
+            <View className=' flex-row items-center mr-1'>
+              <SeeAll target='AllNews' />
+            </View>
+          </View>
           {data && (
             <FlatList
               horizontal={true}
@@ -164,10 +172,17 @@ const HomeScreen: React.FunctionComponent<HomeScreenProps> = ({}) => {
               avatarPicture='https://images.generated.photos/2mP6i-lgiMAV6cANGDvtzOUmmpxBlXmgPTDbPXpXFXI/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LnBob3Rvcy92M18w/OTEwNjQwLmpwZw.jpg'
             />
           </ScrollView>
-          <Text className='text-xl font-bold color-cyan-900 mt-2 ml-3 my-2 color-deepBlue font-ralewayBold'>
-            Journal de bord
-          </Text>
-          <ScrollView className='ml-3 mr-3'>
+          <View className='flex flex-row space-x-10 w-screen  justify-between'>
+            <View className='w-1/2 '>
+              <Text className='text-xl  color-deepBlue font-ralewayBold mt-2 ml-3 my-2'>
+                Journal de bord
+              </Text>
+            </View>
+            <View className=' flex-row items-center mr-1'>
+              <SeeAll target='AllPosts' />
+            </View>
+          </View>
+          <ScrollView className='mx-3'>
             {postsData?.PostsList.map((postItem, index) => {
               if (postItem.validated == 'validated') {
                 return (
@@ -176,9 +191,9 @@ const HomeScreen: React.FunctionComponent<HomeScreenProps> = ({}) => {
                     id={postItem.id}
                     title={postItem.title}
                     picture={postItem.mainPicture}
-                    content={postItem.content}
                     likes={postItem.likes}
                     comments={postItem.comments}
+                    intro={postItem.intro}
                   />
                 )
               }

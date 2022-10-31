@@ -1,5 +1,16 @@
 import { Field, InputType, ID } from 'type-graphql'
+
 import { Posts } from '../../models/posts.model'
+
+@InputType()
+class Comment {
+  @Field(() => String)
+  content: string
+  @Field(() => String)
+  author: string
+  @Field(() => Date)
+  date: Date
+}
 
 @InputType()
 export class PostsInput implements Partial<Posts> {
@@ -8,6 +19,9 @@ export class PostsInput implements Partial<Posts> {
 
   @Field()
   title: string
+
+  @Field()
+  intro: string
 
   @Field()
   author: string
@@ -21,9 +35,16 @@ export class PostsInput implements Partial<Posts> {
   @Field({ nullable: true })
   createdAt: Date
 
+  //* 3 values  : pending, validated, rejected
   @Field({ nullable: true })
-  validated: boolean
+  validated: string
+
+  @Field({ nullable: true })
+  submitted: boolean
 
   @Field({ nullable: true })
   likes: number
+
+  @Field(() => [Comment], { nullable: true })
+  comments: Comment[] // This is a SubDocument Array
 }

@@ -1,13 +1,34 @@
-import { Resolver, Mutation, Arg, Query, ID } from 'type-graphql'
+import {
+  Resolver,
+  Mutation,
+  Arg,
+  Query,
+  Subscription,
+  PubSub,
+  PubSubEngine,
+  UseMiddleware,
+  Ctx,
+  Root,
+} from 'type-graphql'
 import { PostsModel, Posts } from '../models/posts.model'
+import { Users } from '../models/users.model'
 import { PostsInput } from './types/Posts-input'
+import { MyContext } from './MyContext'
+
 import { isAuth } from './isAuth'
+
+const channel = 'LIKES_CHANNEL'
 
 @Resolver((_of) => Posts)
 export class PostsResolver {
   @Query((_returns) => Posts, { nullable: false, name: 'Posts' })
   async getPostsById(@Arg('id') id: string) {
-    return await PostsModel.findById({ _id: id })
+    const postData = await PostsModel.findById({ _id: id })
+      .populate({ path: 'author', model: Users })
+      .exec()
+    console.log('✏️🧡postData dans resolver', postData)
+
+    return postData
   }
 
   @Query(() => [Posts], { name: 'PostsList', description: 'Get List of Posts' })
@@ -16,16 +37,22 @@ export class PostsResolver {
   }
 
   @Mutation(() => Posts, { name: 'createPosts' })
+  @UseMiddleware(isAuth)
   async createPosts(
-    @Arg('newPostsInput') { title, content, author, mainPicture, likes }: PostsInput,
+    @Arg('newPostsInput')
+    { title, intro, content, mainPicture, likes, submitted, validated }: PostsInput,
+    @Ctx() { payload }: MyContext,
   ): Promise<Posts> {
     const Posts = (
       await PostsModel.create({
         title,
+        intro,
         content,
-        author,
+        author: payload.userId,
         mainPicture,
         likes,
+        submitted,
+        validated,
       })
     ).save()
 
@@ -33,17 +60,10 @@ export class PostsResolver {
   }
 
   @Mutation(() => Posts, { name: 'updatePosts' })
-  async updatePosts(
-    @Arg('editPostsInput') { id, title, description, backgroundColor, isArchived }: PostsInput,
-  ): Promise<Posts> {
+  async updatePosts(@Arg('editPostsInput') { id }: PostsInput): Promise<Posts> {
     const Posts = await PostsModel.findByIdAndUpdate(
       { _id: id },
-      {
-        title,
-        description,
-        backgroundColor,
-        isArchived,
-      },
+      { $inc: { likes: 1 } },
       { new: true },
     )
 
@@ -56,5 +76,50 @@ export class PostsResolver {
 
     if (result.ok == 1) return id
     else return ''
+  }
+
+  @Mutation(() => String, { name: 'addLikes' })
+  async addLike(@PubSub() pubSub: PubSubEngine, @Arg('id') id: string): Promise<string> {
+    const result = await PostsModel.findByIdAndUpdate(
+      { _id: id },
+      { $inc: { likes: 1 } },
+      { new: true },
+    )
+    console.log('result', result)
+    const payload = result.likes
+    await pubSub.publish(channel, payload)
+    return result.likes
+  }
+
+  @Subscription({ topics: channel })
+  likeAdded(
+    @Root()
+    {
+      id,
+      title,
+      intro,
+      author,
+      mainPicture,
+      content,
+      createdAt,
+      validated,
+      submitted,
+      comments,
+      likes,
+    }: Posts,
+  ): Posts {
+    return {
+      id,
+      title,
+      intro,
+      author,
+      mainPicture,
+      content,
+      createdAt,
+      validated,
+      submitted,
+      comments,
+      likes,
+    }
   }
 }

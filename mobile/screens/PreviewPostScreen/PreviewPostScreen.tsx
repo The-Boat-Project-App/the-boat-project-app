@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react'
-import { View, Text, Image, useWindowDimensions, ScrollView, Button } from 'react-native'
+import { View, Text, Image, useWindowDimensions, ScrollView } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { newPostVar } from '../../variables/newPost'
 import RenderHtml from 'react-native-render-html'
@@ -9,6 +9,7 @@ import CustomAvatar from '@components/CustomAvatar/CustomAvatar'
 import Toggle from '@components/Toggle/Toggle'
 import { useCreateNewPostMutation } from '../../graphql/graphql'
 import { userDataVar } from 'variables/userData'
+import { Button } from 'native-base'
 
 interface PreviewPostScreenProps {}
 
@@ -17,16 +18,17 @@ const PreviewPostScreen: React.FunctionComponent<PreviewPostScreenProps> = ({}) 
   const userData = useReactiveVar(userDataVar)
 
   const [refreshing, setRefreshing] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isLoadingSave, setIsLoadingSave] = useState<boolean>(false)
   const [title, setTitle] = useState<string>(newPostData.title)
-  const [intro, setIntro] = useState<string>('intro de larticle')
+  const [intro, setIntro] = useState<string>(newPostData.intro)
   const [content, setContent] = useState<string>(newPostData.content)
-  const [mainPicture, setMainPicture] = useState<string>(
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/MI_84_%E2%80%94_RER_B.1.jpg/300px-MI_84_%E2%80%94_RER_B.1.jpg',
-  )
+  const [mainPicture, setMainPicture] = useState<string>(newPostData.image)
   const [author, setAuthor] = useState<string>('Matthieu')
   const [likes, setLikes] = useState<number>(111)
   const [submitted, setSubmitted] = useState<boolean>(true)
   const [validated, setValidated] = useState<string>('pending')
+  const [cloudinaryUrl, setCloudinaryUrl] = useState<string>('')
 
   const [isBookmarked, setIsBookmarked] = useState<boolean>(false)
   const [createNewPost] = useCreateNewPostMutation()
@@ -35,49 +37,91 @@ const PreviewPostScreen: React.FunctionComponent<PreviewPostScreenProps> = ({}) 
   const source = {
     html: newPostData.content,
   }
-  console.log('source', source)
+  // Modification du style du rendu HTML
+  const tagsStyles = {
+    body: {
+      whiteSpace: 'normal',
+      color: '#272E67',
+    },
+    a: {
+      color: '#87BC23',
+    },
+  }
 
   const createPost = async () => {
-    const response = await createNewPost({
-      variables: {
-        newPostsInput: {
-          title,
-          intro,
-          content,
-          author,
-          mainPicture,
-          likes,
-          submitted,
-          validated,
-        },
-      },
-    })
-    if (response && response.data) {
-      console.log('REPONSE', response)
+    setIsLoading(true)
+    const data = new FormData()
+    const source = {
+      uri: newPostData.image,
+      type: 'image/jpeg',
+      name: 'newPic',
     }
+    data.append('file', source)
+    data.append('upload_preset', 'bk8ems2f')
+    data.append('cloud_name', 'matthieudev')
+    fetch('https://api.cloudinary.com/v1_1/matthieudev/image/upload', {
+      method: 'post',
+      body: data,
+    })
+      .then((res) => res.json())
+      .then(async (data) => {
+        const response = await createNewPost({
+          variables: {
+            newPostsInput: {
+              title,
+              intro,
+              content,
+              mainPicture: data.secure_url,
+              likes,
+              submitted,
+              validated,
+              author: '',
+            },
+          },
+        })
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   const savePost = async () => {
-    const response = await createNewPost({
-      variables: {
-        newPostsInput: {
-          title,
-          intro,
-          content,
-          author,
-          mainPicture,
-          likes,
-          submitted: false,
-          validated,
-        },
-      },
-    })
-    if (response && response.data) {
-      console.log('REPONSE', response)
+    setIsLoadingSave(true)
+    const data = new FormData()
+    const source = {
+      uri: newPostData.image,
+      type: 'image/jpeg',
+      name: 'newPic',
     }
+    data.append('file', source)
+    data.append('upload_preset', 'bk8ems2f')
+    data.append('cloud_name', 'matthieudev')
+    fetch('https://api.cloudinary.com/v1_1/matthieudev/image/upload', {
+      method: 'post',
+      body: data,
+    })
+      .then((res) => res.json())
+      .then(async (data) => {
+        const response = await createNewPost({
+          variables: {
+            newPostsInput: {
+              title,
+              intro,
+              content,
+              author,
+              mainPicture: data.secure_url,
+              likes,
+              submitted: false,
+              validated,
+            },
+          },
+        })
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
-  console.log('newPostData.image in PreviewPostScreen', newPostData.image)
   return (
     <SafeAreaView className='flex-1 bg-white'>
       <ScreenHeader />
@@ -102,11 +146,24 @@ const PreviewPostScreen: React.FunctionComponent<PreviewPostScreenProps> = ({}) 
           </Text>
           <Text className='text-xs color-deepBlue font-raleway  mb-4'>Aujourd'hui</Text>
           <View className='color-deepBlue'>
-            <RenderHtml contentWidth={width} source={source} />
+            <RenderHtml tagsStyles={tagsStyles} contentWidth={width} source={source} />
           </View>
         </View>
-        <Button title='Publier!' onPress={createPost} />
-        <Button title='Sauvegarder' onPress={savePost} />
+
+        <View className='flex flex-row justify-end px-4'>
+          <Button onPress={savePost} variant='outline' className='mr-3'>
+            <Text className='color-clearBlue font-ralewayBold'>Sauvegarder</Text>
+          </Button>
+          {isLoading ? (
+            <Button isLoading isLoadingText='Chargement...' onPress={createPost}>
+              <Text className='color-white font-ralewayBold'>Publier</Text>
+            </Button>
+          ) : (
+            <Button isLoadingText='Chargement...' onPress={createPost}>
+              <Text className='color-white font-ralewayBold'>Publier</Text>
+            </Button>
+          )}
+        </View>
       </ScrollView>
     </SafeAreaView>
   )

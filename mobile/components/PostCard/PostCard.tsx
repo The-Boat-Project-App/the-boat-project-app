@@ -8,6 +8,7 @@ interface PostCardProps {
   title: string
   content: string
   likes: number
+  intro: string
   comments: [
     {
       author: string
@@ -24,9 +25,11 @@ export const PostCard: React.FunctionComponent<PostCardProps> = ({
   content,
   likes,
   comments,
+  intro,
 }) => {
   //* Regex to shorten text content
-  const shortenedContent = content.replace(/^(.{110}[^\s]*).*/, '$1') + ' ...'
+  console.log('intro dans postcard', intro)
+  const shortenedContent = intro.replace(/^(.{110}[^\s]*).*/, '$1') + ' ...'
   const navigation = useNavigation()
 
   return (
@@ -35,14 +38,14 @@ export const PostCard: React.FunctionComponent<PostCardProps> = ({
       onPress={() => navigation.navigate('Post', { postId: id })}
     >
       <View className='w-2/5'>
-        <ImageBackground
-          className='h-24 flex-row justify-end'
-          imageStyle={{ borderRadius: '10%' }}
+        <Image
+          className='h-24 flex-row justify-end rounded-lg'
+          // imageStyle={{ borderRadius: '10%' }}
           source={{
             uri: picture,
           }}
           resizeMode='cover'
-        ></ImageBackground>
+        ></Image>
       </View>
       <View className='w-3/5 pl-3 flex-col '>
         <Text className='color-deepBlue font-ralewayBold'>{title}</Text>

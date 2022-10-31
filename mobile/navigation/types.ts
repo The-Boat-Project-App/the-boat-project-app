@@ -12,6 +12,7 @@ export type HomeStackNavigatorParamList = {
   Aboubacar: undefined
   Camille: undefined
   Allan: undefined
+  AllPosts: undefined
 }
 
 export type BottomTabNavigatorParamList = {

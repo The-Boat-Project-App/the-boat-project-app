@@ -1,17 +1,27 @@
 import React, { useState, useCallback } from 'react'
 import { View, Text, Image, useWindowDimensions, ScrollView, RefreshControl } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-
+import RenderHtml from 'react-native-render-html'
 import ScreenHeader from '@components/ScreenHeader/ScreenHeader'
 import CustomAvatar from '@components/CustomAvatar/CustomAvatar'
 import Toggle from '@components/Toggle/Toggle'
 import Applause from '@components/Applause/Applause'
 import { BookmarkIcon } from 'react-native-heroicons/solid'
 import { BookmarkIcon as BookmarkIconOutline } from 'react-native-heroicons/outline'
+import { useGetPostsByIdQuery } from '../../graphql/graphql'
+import moment from 'moment'
+import localization from 'moment/locale/fr'
 
 interface PostScreenProps {}
 
-const PostScreen: React.FunctionComponent<PostScreenProps> = ({}) => {
+const PostScreen: React.FunctionComponent<PostScreenProps> = (props) => {
+  const { data, refetch } = useGetPostsByIdQuery({
+    variables: { id: props.route.params.postId },
+  })
+  console.log('data dans postscreen', data)
+
+  console.log(props.route.params.postId)
+  const [likes, setLikes] = useState<number>(data?.Posts.likes)
   const [refreshing, setRefreshing] = useState<boolean>(false)
   const [isBookmarked, setIsBookmarked] = useState<boolean>(false)
 
@@ -19,14 +29,29 @@ const PostScreen: React.FunctionComponent<PostScreenProps> = ({}) => {
   const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout))
   }
+  console.log('rerender data dans postscreen', data)
   const onRefresh = useCallback(() => {
     setRefreshing(true)
+    console.log('data dans onrefresh sur PostScreen', data)
 
     wait(2000).then(() => {
-      refetch(), refetchPostsData(), setRefreshing(false)
+      refetch(), setRefreshing(false)
     })
   }, [])
 
+  const source = {
+    html: data?.Posts.content,
+  }
+  // Modification du style du rendu HTML
+  const tagsStyles = {
+    body: {
+      whiteSpace: 'normal',
+      color: '#272E67',
+    },
+    a: {
+      color: '#87BC23',
+    },
+  }
   return (
     <SafeAreaView className='flex-1 bg-white'>
       <ScreenHeader />
@@ -42,9 +67,11 @@ const PostScreen: React.FunctionComponent<PostScreenProps> = ({}) => {
         }
       >
         <View className='justify-center bg-white px-3 '>
-          <Text className='font-bold text-lg color-cyan-900 ml-3 mb-4 text-center'>
-            Une mer de plastique
-          </Text>
+          {data?.Posts.title && (
+            <Text className='text-xl color-deepBlue font-ralewayBold  ml-3 mb-4 text-center'>
+              {data?.Posts.title}
+            </Text>
+          )}
           <View className='self-end mr-2 -mb-4 z-40'>
             {isBookmarked ? (
               <BookmarkIcon
@@ -64,52 +91,31 @@ const PostScreen: React.FunctionComponent<PostScreenProps> = ({}) => {
           <Image
             className='h-40 rounded-md '
             source={{
-              uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Vents_du_Sud_-_Le_Grau-du-Roi_03.jpg/1600px-Vents_du_Sud_-_Le_Grau-du-Roi_03.jpg',
+              uri: data?.Posts.mainPicture,
             }}
           />
           <View className='flex-row justify-between mt-2 '>
             <View className='-mt-12'>
-              <CustomAvatar
-                isConnected={true}
-                avatarPicture='https://cache.desktopnexus.com/thumbseg/2487/2487414-bigthumbnail.jpg'
-              />
+              <CustomAvatar isConnected={true} avatarPicture={data?.Posts.author.avatar} />
             </View>
             <View className='flex-row justify-center'>
               <Toggle isEnabled={false} />
             </View>
           </View>
-          <Text className='font-bold text-md color-cyan-900 '>Publié par Antoine</Text>
-          <Text className='font-bold text-xs color-cyan-900  mb-4'>Aujourd'hui, 14h02</Text>
-          <Text className=' text-xs color-cyan-900  mb-4 text-justify'>
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
-            has been the industry's standard dummy text ever since the 1500s, when an unknown
-            printer took a galley of type and scrambled it to make a type specimen book. It has
-            survived not only five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s with the release of
-            Letraset sheets containing Lorem Ipsum passages, and more recently with desktop
-            publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-            l'augmentation du nombre de plaisanciers en France, le mouillage des navires est un
-            enjeu économique, mais aussi environnemental,Face à l'augmentation du nombre de
-            plaisanciers en France, le mouillage des navires est un enjeu économique, mais aussi
-            environnemental,Face à l'augmentation du nombre de plaisanciers en France, le mouillage
-            des navires est un enjeu économique, mais aussi environnemental,Face à l'augmentation du
-            nombre de plaisanciers en France, le mouillage des navires est un enjeu économique, mais
-            aussi environnemental,Face à l'augmentation du nombre de plaisanciers en France, le
-            mouillage des navires est un enjeu économique, mais aussi environnemental,Face à
-            l'augmentation du nombre de plaisanciers en France, le mouillage des navires est un
-            enjeu économique, mais aussi environnemental,Face à l'augmentation du nombre de
-            plaisanciers en France, le mouillage des navires est un enjeu économique, mais aussi
-            environnemental,Face à l'augmentation du nombre de plaisanciers en France, le mouillage
-            des navires est un enjeu économique, mais aussi environnemental,Face à l'augmentation du
-            nombre de plaisanciers en France, le mouillage des navires est un enjeu économique, mais
-            aussi environnemental,Face à l'augmentation du nombre de plaisanciers en France, le
-            mouillage des navires est un enjeu économique, mais aussi environnemental,Face à
-            l'augmentation du nombre de plaisanciers en France, le mouillage des navires est un
-            enjeu économique, mais aussi environnemental,
+          <Text className='text-md color-deepBlue font-ralewayBold  '>
+            {data?.Posts.author.firstName}
           </Text>
+          <Text className='text-xs color-deepBlue font-raleway  mb-4'>
+            {moment().diff(data?.Posts.createdAt, 'days') <= 2
+              ? moment(data?.Posts.createdAt).fromNow()
+              : moment(data?.Posts.createdAt).format('LL')}
+          </Text>
+          {data?.Posts.content && (
+            <RenderHtml contentWidth={width} tagsStyles={tagsStyles} source={source} />
+          )}
         </View>
       </ScrollView>
-      <Applause />
+      {data?.Posts.likes && <Applause likes={data?.Posts.likes} postId={data?.Posts.id} />}
     </SafeAreaView>
   )
 }

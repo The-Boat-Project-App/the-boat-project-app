@@ -26,7 +26,7 @@ module.exports = {
     extend: {
       fontFamily: {
         raleway: ['Raleway_400Regular'],
-        ralewayBold: ['Raleway_600SemiBold'],
+        ralewayBold: ['Raleway_Bold'],
       },
     },
   },

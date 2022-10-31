@@ -3,6 +3,18 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+input Comment {
+  author: String!
+  content: String!
+  date: DateTime!
+}
+
+type CommentObject {
+  author: String!
+  content: String!
+  date: DateTime!
+}
+
 """
 The javascript `Date` as string. Type represents date and time as the ISO Date string.
 """
@@ -10,15 +22,18 @@ scalar DateTime
 
 type LoginResponse {
   accessToken: String!
+  avatar: String!
   firstName: String!
   lastName: String!
   refreshToken: String!
 }
 
 type Mutation {
+  addLikes(id: String!): String!
   createNews(newNewsInput: NewsInput!): News!
   createNotes(newNotesInput: NotesInput!): Notes!
   createPosts(newPostsInput: PostsInput!): Posts!
+  createThemes(newThemesInput: ThemesInput!): ThemeCreatedResponse!
   createUsers(newUsersInput: UsersInput!): RegisterResponse!
   deleteNews(id: String!): String!
   deleteNotes(id: String!): String!
@@ -74,25 +89,31 @@ input NotesInput {
 
 """The Posts Model"""
 type Posts {
-  author: String!
+  author: Users!
+  comments: [CommentObject!]!
   content: String
   createdAt: DateTime!
   id: ID!
+  intro: String!
   likes: Float
   mainPicture: String
+  submitted: Boolean
   title: String!
-  validated: Boolean
+  validated: String
 }
 
 input PostsInput {
   author: String!
+  comments: [Comment!]
   content: String
   createdAt: DateTime
   id: ID
+  intro: String!
   likes: Float
   mainPicture: String
+  submitted: Boolean
   title: String!
-  validated: Boolean
+  validated: String
 }
 
 type Query {
@@ -117,9 +138,28 @@ type Query {
 
 type RegisterResponse {
   accessToken: String!
+  avatar: String!
   firstName: String!
   lastName: String!
   refreshToken: String!
+}
+
+type Subscription {
+  likeAdded: Posts!
+}
+
+type ThemeCreatedResponse {
+  desc: String!
+  id: String!
+  intro: String!
+  name: String!
+}
+
+input ThemesInput {
+  desc: String
+  id: ID
+  intro: String
+  name: String
 }
 
 """The Users Model"""
@@ -145,7 +185,7 @@ type Users {
 
 input UsersInput {
   active: Boolean
-  app_lang: String
+  appLang: String
   audio: String
   avatar: String
   bio: String

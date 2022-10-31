@@ -3,7 +3,7 @@ mutation createNewPost($newPostsInput: PostsInput!) {
     title
     intro
     content
-    author
+
     mainPicture
     likes
     submitted

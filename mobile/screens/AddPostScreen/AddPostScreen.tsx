@@ -38,6 +38,7 @@ const AddPostScreen: React.FunctionComponent<AddPostScreenProps> = ({}) => {
 
   const [showDescError, setShowDescError] = useState(false)
   const [image, setImage] = useState('')
+  const [imageBase64, setImageBase64] = useState('')
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -47,7 +48,7 @@ const AddPostScreen: React.FunctionComponent<AddPostScreenProps> = ({}) => {
       aspect: [4, 3],
       quality: 1,
     })
-
+    console.log('🖍🖍', result)
     if (!result.cancelled) {
       setImage(result.uri)
     }
@@ -65,7 +66,6 @@ const AddPostScreen: React.FunctionComponent<AddPostScreenProps> = ({}) => {
   const submitContentHandle = () => {
     const replaceHTML = descHTML.replace(/<(.|\n)*?>/g, '').trim()
     const replaceWhiteSpace = replaceHTML.replace(/&nbsp;/g, '').trim()
-    console.log('image dans lappel de la fonction', image)
     if (replaceWhiteSpace.length <= 0) {
       setShowDescError(true)
     } else {
@@ -93,6 +93,7 @@ const AddPostScreen: React.FunctionComponent<AddPostScreenProps> = ({}) => {
           h={20}
           placeholder='Introduction'
           w='100%'
+          fontSize='md'
           onChangeText={(val) => setIntro(val)}
           value={intro}
         />
@@ -103,7 +104,7 @@ const AddPostScreen: React.FunctionComponent<AddPostScreenProps> = ({}) => {
           <PhotoIcon size='35' color='blue' onPress={pickImage} />
           <CameraIcon size='35' color='black' />
         </View>
-        {image && (
+        {image && image !== '' && (
           <Image
             className='self-center m-2 rounded-md'
             width='200'

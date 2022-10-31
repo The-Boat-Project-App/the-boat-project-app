@@ -184,7 +184,7 @@ export type NotesInput = {
 /** The Posts Model */
 export type Posts = {
   __typename?: 'Posts';
-  author: Scalars['String'];
+  author: Users;
   comments: Array<CommentObject>;
   content?: Maybe<Scalars['String']>;
   createdAt: Scalars['DateTime'];
@@ -330,7 +330,7 @@ export type CreateNewPostMutationVariables = Exact<{
 }>;
 
 
-export type CreateNewPostMutation = { __typename?: 'Mutation', createPosts: { __typename?: 'Posts', title: string, intro: string, content?: string | null, author: string, mainPicture?: string | null, likes?: number | null, submitted?: boolean | null, validated?: string | null } };
+export type CreateNewPostMutation = { __typename?: 'Mutation', createPosts: { __typename?: 'Posts', title: string, intro: string, content?: string | null, mainPicture?: string | null, likes?: number | null, submitted?: boolean | null, validated?: string | null } };
 
 export type GetAllNewsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -340,12 +340,19 @@ export type GetAllNewsQuery = { __typename?: 'Query', NewsList: Array<{ __typena
 export type GetAllPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllPostsQuery = { __typename?: 'Query', PostsList: Array<{ __typename?: 'Posts', id: string, title: string, author: string, content?: string | null, mainPicture?: string | null, createdAt: any, validated?: string | null, likes?: number | null, comments: Array<{ __typename?: 'CommentObject', author: string, content: string, date: any }> }> };
+export type GetAllPostsQuery = { __typename?: 'Query', PostsList: Array<{ __typename?: 'Posts', id: string, title: string, content?: string | null, mainPicture?: string | null, createdAt: any, validated?: string | null, likes?: number | null, intro: string, comments: Array<{ __typename?: 'CommentObject', author: string, content: string, date: any }> }> };
 
 export type GetAllUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetAllUsersQuery = { __typename?: 'Query', usersList: Array<{ __typename?: 'Users', id: string, email?: string | null, firstName: string, lastName: string }> };
+
+export type GetPostsByIdQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type GetPostsByIdQuery = { __typename?: 'Query', Posts: { __typename?: 'Posts', id: string, title: string, content?: string | null, mainPicture?: string | null, createdAt: any, intro: string, validated?: string | null, likes?: number | null, author: { __typename?: 'Users', avatar?: string | null, firstName: string, id: string, status?: string | null }, comments: Array<{ __typename?: 'CommentObject', author: string, content: string, date: any }> } };
 
 export type GetUserDataQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -404,7 +411,6 @@ export const CreateNewPostDocument = gql`
     title
     intro
     content
-    author
     mainPicture
     likes
     submitted
@@ -483,12 +489,12 @@ export const GetAllPostsDocument = gql`
   PostsList {
     id
     title
-    author
     content
     mainPicture
     createdAt
     validated
     likes
+    intro
     comments {
       author
       content
@@ -561,6 +567,59 @@ export function useGetAllUsersLazyQuery(baseOptions?: ApolloReactHooks.LazyQuery
 export type GetAllUsersQueryHookResult = ReturnType<typeof useGetAllUsersQuery>;
 export type GetAllUsersLazyQueryHookResult = ReturnType<typeof useGetAllUsersLazyQuery>;
 export type GetAllUsersQueryResult = Apollo.QueryResult<GetAllUsersQuery, GetAllUsersQueryVariables>;
+export const GetPostsByIdDocument = gql`
+    query getPostsById($id: String!) {
+  Posts(id: $id) {
+    id
+    title
+    content
+    mainPicture
+    createdAt
+    author {
+      avatar
+      firstName
+      id
+      status
+    }
+    intro
+    validated
+    likes
+    comments {
+      author
+      content
+      date
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetPostsByIdQuery__
+ *
+ * To run a query within a React component, call `useGetPostsByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPostsByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPostsByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetPostsByIdQuery(baseOptions: ApolloReactHooks.QueryHookOptions<GetPostsByIdQuery, GetPostsByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<GetPostsByIdQuery, GetPostsByIdQueryVariables>(GetPostsByIdDocument, options);
+      }
+export function useGetPostsByIdLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetPostsByIdQuery, GetPostsByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<GetPostsByIdQuery, GetPostsByIdQueryVariables>(GetPostsByIdDocument, options);
+        }
+export type GetPostsByIdQueryHookResult = ReturnType<typeof useGetPostsByIdQuery>;
+export type GetPostsByIdLazyQueryHookResult = ReturnType<typeof useGetPostsByIdLazyQuery>;
+export type GetPostsByIdQueryResult = Apollo.QueryResult<GetPostsByIdQuery, GetPostsByIdQueryVariables>;
 export const GetUserDataDocument = gql`
     query getUserData {
   user {
