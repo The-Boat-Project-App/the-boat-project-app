@@ -17,9 +17,11 @@ import { NewsResolver } from './resolvers/news.resolver'
 import { createAccessToken, createRefreshToken } from './resolvers/auth'
 import { sendRefreshToken } from './resolvers/sendRefreshToken'
 import { PostsResolver } from './resolvers/posts.resolver'
+import { getCoordinate } from './puppeteer/index'
 
 const executeMain = async () => {
   dotenv.config()
+  getCoordinate()
 
   const schema = await buildSchema({
     resolvers: [NotesResolver, UsersResolver, NewsResolver, PostsResolver],
