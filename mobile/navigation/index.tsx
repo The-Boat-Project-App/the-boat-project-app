@@ -30,6 +30,7 @@ const RootNavigator = () => {
         userDataVar({
           firstName: response.firstName,
           lastName: response.lastName,
+          avatar: response.avatar,
         })
         setLoading(false)
       })

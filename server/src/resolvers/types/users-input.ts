@@ -31,7 +31,7 @@ export class UsersInput implements Partial<Users> {
   lang: string
 
   @Field({ nullable: true })
-  app_lang: string
+  appLang: string
 
   @Field({ nullable: true })
   status: string

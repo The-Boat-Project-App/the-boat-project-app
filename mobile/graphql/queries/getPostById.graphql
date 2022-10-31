@@ -1,0 +1,23 @@
+query getPostsById($id: String!) {
+  Posts(id: $id) {
+    id
+    title
+    content
+    mainPicture
+    createdAt
+    author {
+      avatar
+      firstName
+      id
+      status
+    }
+    intro
+    validated
+    likes
+    comments {
+      author
+      content
+      date
+    }
+  }
+}

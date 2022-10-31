@@ -55,6 +55,7 @@ const BottomTabs = () => {
         tabBarActiveTintColor: '#87BC23',
         tabBarInactiveTintColor: '#0C617D',
         headerShown: false,
+        tabBarHideOnKeyboard: true,
       })}
     >
       <Tab.Screen
