@@ -5,6 +5,10 @@ import { getAccessToken } from '../accessToken'
 
 import SignUpScreen from '@screens/SignUpScreen/SignUpScreen'
 import SignInScreen from '@screens/SignInScreen/SignInScreen'
+import PostScreen from '@screens/PostScreen/PostScreen'
+import PreviewPostScreen from '@screens/PreviewPostScreen/PreviewPostScreen'
+import NewsScreen from '@screens/NewsScreen/NewsScreen'
+import AllPostsScreen from '@screens/AllPostsScreen/AllPostsScreen'
 import BottomTabs from './Tabs'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { StatusBar } from 'expo-status-bar'
@@ -33,6 +37,13 @@ const HomeStackNavigator = () => {
         <HomeStack.Screen name='BottomTabs' component={BottomTabs} />
         <HomeStack.Screen name='SignIn' component={SignInScreen} />
         <HomeStack.Screen name='SignUp' component={SignUpScreen} />
+        <HomeStack.Screen name='Post' component={PostScreen} />
+        <HomeStack.Screen name='AllPosts' component={AllPostsScreen} />
+
+        <HomeStack.Screen name='PreviewPost' component={PreviewPostScreen} />
+
+        <HomeStack.Screen name='News' component={NewsScreen} />
+
         <HomeStack.Screen name='Dev' component={DevScreen} />
         <HomeStack.Screen name='Mika' component={MikaScreen} />
         <HomeStack.Screen name='Aboubacar' component={AboubacarScreen} />

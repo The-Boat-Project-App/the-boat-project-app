@@ -10,10 +10,11 @@ import cookieParser from 'cookie-parser'
 import { UsersModel } from './models/users.model'
 import cors from 'cors'
 
-//Resolvers
+// Resolvers
 import { NotesResolver } from './resolvers/notes.resolver'
 import { UsersResolver } from './resolvers/users.resolver'
 import { NewsResolver } from './resolvers/news.resolver'
+import { ThemesResolver } from './resolvers/themes.resolver'
 import { createAccessToken, createRefreshToken } from './resolvers/auth'
 import { sendRefreshToken } from './resolvers/sendRefreshToken'
 import { PostsResolver } from './resolvers/posts.resolver'
@@ -24,7 +25,7 @@ const executeMain = async () => {
   getCoordinate()
 
   const schema = await buildSchema({
-    resolvers: [NotesResolver, UsersResolver, NewsResolver, PostsResolver],
+    resolvers: [NotesResolver, UsersResolver, NewsResolver, PostsResolver, ThemesResolver],
     emitSchemaFile: true,
     validate: false,
   })
@@ -56,6 +57,7 @@ const executeMain = async () => {
       console.log('payload', payload)
     } catch (err) {
       console.log(err)
+
       return res.send({ ok: false, accessToken: '' })
     }
 
@@ -74,6 +76,7 @@ const executeMain = async () => {
       refreshToken: createRefreshToken(user),
       firstName: user.firstName,
       lastName: user.lastName,
+      avatar: user.avatar,
     })
   })
   //* REST API Route for web JWT REFRESH TOKEN

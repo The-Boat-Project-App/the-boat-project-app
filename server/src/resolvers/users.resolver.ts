@@ -12,6 +12,7 @@ import {
 } from 'type-graphql'
 import { UsersModel, Users } from '../models/users.model'
 import { UsersInput } from './types/users-input'
+import { PostsInput } from './types/posts-input'
 import { hash, compare } from 'bcryptjs'
 import { sign } from 'jsonwebtoken'
 import { MyContext } from './MyContext'
@@ -29,6 +30,8 @@ class LoginResponse {
   firstName: string
   @Field()
   lastName: string
+  @Field()
+  avatar: string
 }
 
 @ObjectType()
@@ -41,6 +44,8 @@ class RegisterResponse {
   firstName: string
   @Field()
   lastName: string
+  @Field()
+  avatar: string
 }
 
 @Resolver((_of) => Users)
@@ -89,6 +94,7 @@ export class UsersResolver {
       refreshToken: refreshToken,
       lastName: user.lastName,
       firstName: user.firstName,
+      avatar: user.avatar,
     }
   }
 
@@ -103,6 +109,8 @@ export class UsersResolver {
       lastName,
       email,
       password: hashedPassword,
+      avatar:
+        'https://res.cloudinary.com/matthieudev/image/upload/v1653480800/generic_avatar_mnfcbx.png',
     })
     const user = await newUser.save()
     console.log('lastnam créé dans resolver', user.lastName)
@@ -118,6 +126,7 @@ export class UsersResolver {
       refreshToken: refreshToken,
       lastName: user.lastName,
       firstName: user.firstName,
+      avatar: user.avatar,
     }
   }
 

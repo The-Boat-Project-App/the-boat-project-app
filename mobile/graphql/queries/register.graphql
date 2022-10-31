@@ -4,5 +4,6 @@ mutation Register($newUsersInput: UsersInput!) {
     refreshToken
     firstName
     lastName
+    avatar
   }
 }

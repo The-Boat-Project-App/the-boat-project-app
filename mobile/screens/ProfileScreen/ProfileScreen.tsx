@@ -34,7 +34,7 @@ const ProfileScreen: React.FunctionComponent<ProfileScreenProps> = ({}) => {
     console.log('suppression de l access token et retour à SignInScreen')
     await deleteAccessToken()
     accessTokenVar('')
-    userDataVar({ firstName: '', lastName: '' })
+    userDataVar({ firstName: '', lastName: '', avatar: '' })
     setUserToken(null)
   }
 
@@ -57,7 +57,7 @@ const ProfileScreen: React.FunctionComponent<ProfileScreenProps> = ({}) => {
           <Image
             className='w-40 h-40 rounded-full mt-20'
             source={{
-              uri: 'https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9',
+              uri: userDataInApollo.avatar,
             }}
           />
           <TouchableOpacity className='absolute mt-52'>

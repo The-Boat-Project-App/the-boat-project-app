@@ -4,5 +4,6 @@ mutation Login($UsersLoginInput: UsersInput!) {
     refreshToken
     firstName
     lastName
+    avatar
   }
 }

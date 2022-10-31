@@ -1,0 +1,12 @@
+mutation createNewPost($newPostsInput: PostsInput!) {
+  createPosts(newPostsInput: $newPostsInput) {
+    title
+    intro
+    content
+
+    mainPicture
+    likes
+    submitted
+    validated
+  }
+}
