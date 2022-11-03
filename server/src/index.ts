@@ -117,8 +117,8 @@ const executeMain = async () => {
   })
 
   server.applyMiddleware({ app: expressServer })
-
-  expressServer.listen({ port: process.env.PORT }, () =>
+  const PORT = process.env.PORT || 80
+  expressServer.listen({ port: PORT }, () =>
     console.log(
       `✨✨Server ready and listening at ==> http://localhost:${process.env.PORT}${server.graphqlPath}`,
     ),
