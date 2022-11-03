@@ -1,1 +1,1 @@
-web: cd server/src && ts-node server.ts
+worker: cd server/src && ts-node server.ts
