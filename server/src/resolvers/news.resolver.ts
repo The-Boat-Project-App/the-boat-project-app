@@ -31,23 +31,23 @@ export class NewsResolver {
     return News
   }
 
-  @Mutation(() => News, { name: 'updateNews' })
-  async updateNews(
-    @Arg('editNewsInput') { id, title, description, backgroundColor, isArchived }: NewsInput,
-  ): Promise<News> {
-    const News = await NewsModel.findByIdAndUpdate(
-      { _id: id },
-      {
-        title,
-        description,
-        backgroundColor,
-        isArchived,
-      },
-      { new: true },
-    )
+  // @Mutation(() => News, { name: 'updateNews' })
+  // async updateNews(
+  //   @Arg('editNewsInput') { id, title, description, backgroundColor, isArchived }: NewsInput,
+  // ): Promise<News> {
+  //   const News = await NewsModel.findByIdAndUpdate(
+  //     { _id: id },
+  //     {
+  //       title,
+  //       description,
+  //       backgroundColor,
+  //       isArchived,
+  //     },
+  //     { new: true },
+  //   )
 
-    return News
-  }
+  //   return News
+  // }
 
   @Mutation(() => String, { name: 'deleteNews' })
   async deleteNews(@Arg('id') id: string): Promise<String> {
