@@ -1,1 +1,1 @@
-web: cd server/src && node server.ts
+web: cd server/src && ts-node server.ts
