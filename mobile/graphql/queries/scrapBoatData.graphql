@@ -1,0 +1,11 @@
+mutation updateTrip {
+  updateTrip {
+    locations {
+      name
+      latitude
+      longitude
+      date
+      description
+    }
+  }
+}

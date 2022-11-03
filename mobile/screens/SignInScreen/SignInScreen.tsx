@@ -34,6 +34,7 @@ const SignInScreen: React.FunctionComponent<SignInScreenProps> = ({}) => {
         firstName: response.data.loginUsers.firstName,
         lastName: response.data.loginUsers.lastName,
         avatar: response.data.loginUsers.avatar,
+        status: response.data.loginUsers.status,
       })
       navigation.navigate('BottomTabs', { screen: 'Home' })
     }

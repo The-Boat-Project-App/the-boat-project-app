@@ -1,6 +1,6 @@
 import { TripModel } from '../models/trips/trip.model'
 
-const puppeteer = require('puppeteer')
+import puppeteer from 'puppeteer'
 
 export const getCoordinate = async () => {
   const ACCEPT_BUTTON =
@@ -12,7 +12,7 @@ export const getCoordinate = async () => {
   const DATE_TIME_SELECTOR =
     '#vesselDetails_latestPositionSection > div.MuiCollapse-root.MuiCollapse-vertical.MuiCollapse-entered.css-c4sutr > div > div > div > div > div.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-12.MuiGrid-grid-md-true.css-4d8ot5 > p:nth-child(1) > b'
 
-  const browser = await puppeteer.launch({ headless: false })
+  const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()
   // viewport and device scale factor of my laptop
   await page.setViewport({ width: 2880, height: 1800, deviceScaleFactor: 2 })

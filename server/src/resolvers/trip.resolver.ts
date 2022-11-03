@@ -1,58 +1,61 @@
-import { Resolver, Mutation, Arg, Query, ID } from 'type-graphql'
-import { Trip, TripModel } from './../models/trips/trip.model'
+import {
+  Resolver,
+  Mutation,
+  Arg,
+  Query,
+  ID,
+  ObjectType,
+  Field,
+  Ctx,
+  UseMiddleware,
+  Int,
+} from 'type-graphql'
+import { TripModel, Trip, Location } from '../models/trips/trip.model'
+import { Boat } from '../models/trips/boat'
+// import { Location } from '../models/trips/location'
+import { getCoordinate } from '../puppeteer/index'
+import { TripInput } from './types/trip-input'
+import { sign } from 'jsonwebtoken'
+import { MyContext } from './MyContext'
+import { createAccessToken, createRefreshToken } from './auth'
+import { isAuth } from './isAuth'
+import { sendRefreshToken } from './sendRefreshToken'
 
-// @Resolver((_of) => Posts)
-// export class PostsResolver {
-//   @Query((_returns) => Posts, { nullable: false, name: 'Posts' })
-//   async getPostsById(@Arg('id') id: string) {
-//     return await PostsModel.findById({ _id: id })
-//   }
+@Resolver((_of) => Trip)
+export class TripResolver {
+  @Mutation(() => Trip, { name: 'updateTrip' })
+  async updateTrips(): Promise<Trip> {
+    console.log('resolver atteint')
+    const coords = await getCoordinate()
+    console.log('🤩coords', coords)
+    const updatedTrip = await TripModel.updateOne(
+      { _id: '63627a16ad3d7a6d9999e8e9' },
+      {
+        $push: {
+          locations: {
+            latitude: Number(coords.coords[0]),
+            longitude: Number(coords.coords[1]),
+            date: coords.date,
+            name: coords.currentPort,
+            description: 'description',
+          },
+        },
+      },
+      { new: true },
+    )
+    const refreshedTrip = await TripModel.findOne({ _id: '63627a16ad3d7a6d9999e8e9' })
 
-//   @Query(() => [Posts], { name: 'PostsList', description: 'Get List of Posts' })
-//   async getAllPosts() {
-//     return await PostsModel.find()
-//   }
+    console.log('updatedTrip', refreshedTrip)
+    return refreshedTrip
+  }
 
-// @Mutation(() => Posts, { name: 'createPosts' })
-// async createPosts(
-//   @Arg('newPostsInput') { title, content, author, mainPicture, likes }: PostsInput,
-// ): Promise<Posts> {
-//   const Posts = (
-//     await PostsModel.create({
-//       title,
-//       content,
-//       author,
-//       mainPicture,
-//       likes,
-//     })
-//   ).save()
-
-//   return Posts
-// }
-
-//   @Mutation(() => Posts, { name: 'updatePosts' })
-//   async updatePosts(
-//     @Arg('editPostsInput') { id, title, description, backgroundColor, isArchived }: PostsInput,
-//   ): Promise<Posts> {
-//     const Posts = await PostsModel.findByIdAndUpdate(
-//       { _id: id },
-//       {
-//         title,
-//         description,
-//         backgroundColor,
-//         isArchived,
-//       },
-//       { new: true },
-//     )
-
-//     return Posts
-//   }
-
-//   @Mutation(() => String, { name: 'deletePosts' })
-//   async deletePosts(@Arg('id') id: string): Promise<String> {
-//     const result = await PostsModel.deleteOne({ _id: id })
-
-//     if (result.ok == 1) return id
-//     else return ''
-//   }
-// }
+  //   @Mutation(() => Boolean)
+  //   async revokeRefreshTokensForUser(@Arg('userId', () => String) userId: string) {
+  //     const users = await UsersModel.findByIdAndUpdate(
+  //       { _id: userId },
+  //       { $inc: { tokenVersion: 1 } },
+  //       { new: true },
+  //     )
+  //     return true
+  //   }
+}

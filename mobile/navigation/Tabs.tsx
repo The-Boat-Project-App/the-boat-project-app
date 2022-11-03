@@ -7,7 +7,6 @@ import {
   UserIcon,
 } from 'react-native-heroicons/solid'
 import { PlusCircleIcon as PlusCircleIconOutline } from 'react-native-heroicons/outline'
-
 import { Text } from 'react-native'
 import { BottomTabNavigatorParamList } from './types'
 import HomeScreen from '@screens/HomeScreen/HomeScreen'
@@ -30,7 +29,7 @@ const BottomTabs = () => {
           } else if (route.name === 'Profile') {
             return <UserIcon size={size} color={color} />
           } else if (route.name === 'AddPost') {
-            return <PlusCircleIconOutline size={size * 1.4} color={color} />
+            return <PlusCircleIconOutline size={size * 1.5} color={color} />
           } else if (route.name === 'Map') {
             return <MapIcon size={size} color={color} />
           }

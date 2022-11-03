@@ -18,14 +18,22 @@ import { ThemesResolver } from './resolvers/themes.resolver'
 import { createAccessToken, createRefreshToken } from './resolvers/auth'
 import { sendRefreshToken } from './resolvers/sendRefreshToken'
 import { PostsResolver } from './resolvers/posts.resolver'
+import { TripResolver } from './resolvers/trip.resolver'
 import { getCoordinate } from './puppeteer/index'
 
 const executeMain = async () => {
   dotenv.config()
-  getCoordinate()
+  // getCoordinate()
 
   const schema = await buildSchema({
-    resolvers: [NotesResolver, UsersResolver, NewsResolver, PostsResolver, ThemesResolver],
+    resolvers: [
+      NotesResolver,
+      UsersResolver,
+      NewsResolver,
+      PostsResolver,
+      ThemesResolver,
+      TripResolver,
+    ],
     emitSchemaFile: true,
     validate: false,
   })
@@ -77,6 +85,7 @@ const executeMain = async () => {
       firstName: user.firstName,
       lastName: user.lastName,
       avatar: user.avatar,
+      status: user.status,
     })
   })
   //* REST API Route for web JWT REFRESH TOKEN

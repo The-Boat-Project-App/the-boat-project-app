@@ -20,12 +20,21 @@ The javascript `Date` as string. Type represents date and time as the ISO Date s
 """
 scalar DateTime
 
+type LocationObject {
+  date: DateTime!
+  description: String!
+  latitude: Float!
+  longitude: Float!
+  name: String!
+}
+
 type LoginResponse {
   accessToken: String!
   avatar: String!
   firstName: String!
   lastName: String!
   refreshToken: String!
+  status: String!
 }
 
 type Mutation {
@@ -44,6 +53,7 @@ type Mutation {
   updateNews(editNewsInput: NewsInput!): News!
   updateNotes(editNotesInput: NotesInput!): Notes!
   updatePosts(editPostsInput: PostsInput!): Posts!
+  updateTrip: Trip!
   updateUsers(editUsersInput: UsersInput!): Users!
 }
 
@@ -142,6 +152,7 @@ type RegisterResponse {
   firstName: String!
   lastName: String!
   refreshToken: String!
+  status: String!
 }
 
 type Subscription {
@@ -160,6 +171,12 @@ input ThemesInput {
   id: ID
   intro: String
   name: String
+}
+
+"""The Trips Model"""
+type Trip {
+  id: ID!
+  locations: [LocationObject!]!
 }
 
 """The Users Model"""

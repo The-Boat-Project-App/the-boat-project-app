@@ -20,7 +20,6 @@ import {
   LinkIcon,
   ListBulletIcon,
   PhotoIcon,
-  CameraIcon,
 } from 'react-native-heroicons/outline'
 import { Input, Image, TextArea } from 'native-base'
 import * as ImagePicker from 'expo-image-picker'
@@ -102,7 +101,6 @@ const AddPostScreen: React.FunctionComponent<AddPostScreenProps> = ({}) => {
         </Text>
         <View className='flex-row justify-center'>
           <PhotoIcon size='35' color='blue' onPress={pickImage} />
-          <CameraIcon size='35' color='black' />
         </View>
         {image && image !== '' && (
           <Image

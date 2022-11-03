@@ -16,9 +16,10 @@ import { deleteAccessToken, getAccessToken } from 'accessToken'
 import SignInScreen from '@screens/SignInScreen/SignInScreen'
 import { useReactiveVar, gql, useQuery } from '@apollo/client'
 import { accessTokenVar } from '../../variables/accessToken'
-import { useGetUserDataQuery } from '../../graphql/graphql'
+import { useGetUserDataQuery, useScrapBoatDataMutation } from '../../graphql/graphql'
 import { userDataVar } from '../../variables/userData'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import DevController from '@components/DevController/DevController'
 
 interface ProfileScreenProps {}
 
@@ -34,7 +35,7 @@ const ProfileScreen: React.FunctionComponent<ProfileScreenProps> = ({}) => {
     console.log('suppression de l access token et retour à SignInScreen')
     await deleteAccessToken()
     accessTokenVar('')
-    userDataVar({ firstName: '', lastName: '', avatar: '' })
+    userDataVar({ firstName: '', lastName: '', avatar: '', status: '' })
     setUserToken(null)
   }
 
@@ -53,6 +54,7 @@ const ProfileScreen: React.FunctionComponent<ProfileScreenProps> = ({}) => {
   } else {
     return (
       <SafeAreaView className='flex-1 items-center text-center '>
+        {userDataInApollo.status === 'dev' && <DevController />}
         <View className='flex-row-reverse'>
           <Image
             className='w-40 h-40 rounded-full mt-20'

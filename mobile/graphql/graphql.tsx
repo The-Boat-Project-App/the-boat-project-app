@@ -30,6 +30,15 @@ export type CommentObject = {
   date: Scalars['DateTime'];
 };
 
+export type LocationObject = {
+  __typename?: 'LocationObject';
+  date: Scalars['DateTime'];
+  description: Scalars['String'];
+  latitude: Scalars['Float'];
+  longitude: Scalars['Float'];
+  name: Scalars['String'];
+};
+
 export type LoginResponse = {
   __typename?: 'LoginResponse';
   accessToken: Scalars['String'];
@@ -37,6 +46,7 @@ export type LoginResponse = {
   firstName: Scalars['String'];
   lastName: Scalars['String'];
   refreshToken: Scalars['String'];
+  status: Scalars['String'];
 };
 
 export type Mutation = {
@@ -56,6 +66,7 @@ export type Mutation = {
   updateNews: News;
   updateNotes: Notes;
   updatePosts: Posts;
+  updateTrip: Trip;
   updateUsers: Users;
 };
 
@@ -255,6 +266,7 @@ export type RegisterResponse = {
   firstName: Scalars['String'];
   lastName: Scalars['String'];
   refreshToken: Scalars['String'];
+  status: Scalars['String'];
 };
 
 export type Subscription = {
@@ -275,6 +287,13 @@ export type ThemesInput = {
   id?: InputMaybe<Scalars['ID']>;
   intro?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
+};
+
+/** The Trips Model */
+export type Trip = {
+  __typename?: 'Trip';
+  id: Scalars['ID'];
+  locations: Array<LocationObject>;
 };
 
 /** The Users Model */
@@ -364,14 +383,19 @@ export type LoginMutationVariables = Exact<{
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', loginUsers: { __typename?: 'LoginResponse', accessToken: string, refreshToken: string, firstName: string, lastName: string, avatar: string } };
+export type LoginMutation = { __typename?: 'Mutation', loginUsers: { __typename?: 'LoginResponse', accessToken: string, refreshToken: string, firstName: string, lastName: string, avatar: string, status: string } };
 
 export type RegisterMutationVariables = Exact<{
   newUsersInput: UsersInput;
 }>;
 
 
-export type RegisterMutation = { __typename?: 'Mutation', createUsers: { __typename?: 'RegisterResponse', accessToken: string, refreshToken: string, firstName: string, lastName: string, avatar: string } };
+export type RegisterMutation = { __typename?: 'Mutation', createUsers: { __typename?: 'RegisterResponse', accessToken: string, refreshToken: string, firstName: string, lastName: string, avatar: string, status: string } };
+
+export type UpdateTripMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UpdateTripMutation = { __typename?: 'Mutation', updateTrip: { __typename?: 'Trip', locations: Array<{ __typename?: 'LocationObject', name: string, latitude: number, longitude: number, date: any, description: string }> } };
 
 
 export const AddLikesDocument = gql`
@@ -663,6 +687,7 @@ export const LoginDocument = gql`
     firstName
     lastName
     avatar
+    status
   }
 }
     `;
@@ -700,6 +725,7 @@ export const RegisterDocument = gql`
     firstName
     lastName
     avatar
+    status
   }
 }
     `;
@@ -729,3 +755,41 @@ export function useRegisterMutation(baseOptions?: ApolloReactHooks.MutationHookO
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const UpdateTripDocument = gql`
+    mutation updateTrip {
+  updateTrip {
+    locations {
+      name
+      latitude
+      longitude
+      date
+      description
+    }
+  }
+}
+    `;
+export type UpdateTripMutationFn = Apollo.MutationFunction<UpdateTripMutation, UpdateTripMutationVariables>;
+
+/**
+ * __useUpdateTripMutation__
+ *
+ * To run a mutation, you first call `useUpdateTripMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateTripMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateTripMutation, { data, loading, error }] = useUpdateTripMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useUpdateTripMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateTripMutation, UpdateTripMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<UpdateTripMutation, UpdateTripMutationVariables>(UpdateTripDocument, options);
+      }
+export type UpdateTripMutationHookResult = ReturnType<typeof useUpdateTripMutation>;
+export type UpdateTripMutationResult = Apollo.MutationResult<UpdateTripMutation>;
+export type UpdateTripMutationOptions = Apollo.BaseMutationOptions<UpdateTripMutation, UpdateTripMutationVariables>;

@@ -31,6 +31,7 @@ const RootNavigator = () => {
           firstName: response.firstName,
           lastName: response.lastName,
           avatar: response.avatar,
+          status: response.status,
         })
         setLoading(false)
       })

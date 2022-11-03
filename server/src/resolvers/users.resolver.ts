@@ -32,6 +32,8 @@ class LoginResponse {
   lastName: string
   @Field()
   avatar: string
+  @Field()
+  status: string
 }
 
 @ObjectType()
@@ -46,6 +48,8 @@ class RegisterResponse {
   lastName: string
   @Field()
   avatar: string
+  @Field()
+  status: string
 }
 
 @Resolver((_of) => Users)
@@ -88,13 +92,14 @@ export class UsersResolver {
     //* login successful
     const refreshToken = createRefreshToken(user)
     sendRefreshToken(res, createRefreshToken(user))
-
+    console.log('user avant return du sign in', user)
     return {
       accessToken: createAccessToken(user),
       refreshToken: refreshToken,
       lastName: user.lastName,
       firstName: user.firstName,
       avatar: user.avatar,
+      status: user.status,
     }
   }
 
@@ -111,6 +116,7 @@ export class UsersResolver {
       password: hashedPassword,
       avatar:
         'https://res.cloudinary.com/matthieudev/image/upload/v1653480800/generic_avatar_mnfcbx.png',
+      status: 'regular',
     })
     const user = await newUser.save()
     console.log('lastnam créé dans resolver', user.lastName)
@@ -127,6 +133,7 @@ export class UsersResolver {
       lastName: user.lastName,
       firstName: user.firstName,
       avatar: user.avatar,
+      status: user.status,
     }
   }
 
