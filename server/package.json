@@ -2,9 +2,6 @@
   "name": "the-boat-project-app-server",
   "version": "1.0.0",
   "description": "",
-  "engines": {
-    "node": "16.17.0"
-  },
   "main": "index.js",
   "scripts": {
     "start": "yarn start",
