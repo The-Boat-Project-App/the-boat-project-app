@@ -137,23 +137,23 @@ export class UsersResolver {
     }
   }
 
-  @Mutation(() => Users, { name: 'updateUsers' })
-  async updateUsers(
-    @Arg('editUsersInput') { id, title, description, backgroundColor, isArchived }: UsersInput,
-  ): Promise<Users> {
-    const users = await UsersModel.findByIdAndUpdate(
-      { _id: id },
-      {
-        title,
-        description,
-        backgroundColor,
-        isArchived,
-      },
-      { new: true },
-    )
+  // @Mutation(() => Users, { name: 'updateUsers' })
+  // async updateUsers(
+  //   @Arg('editUsersInput') { id, title, description, backgroundColor, isArchived }: UsersInput,
+  // ): Promise<Users> {
+  //   const users = await UsersModel.findByIdAndUpdate(
+  //     { _id: id },
+  //     {
+  //       title,
+  //       description,
+  //       backgroundColor,
+  //       isArchived,
+  //     },
+  //     { new: true },
+  //   )
 
-    return users
-  }
+  //   return users
+  // }
 
   @Mutation(() => Boolean)
   async revokeRefreshTokensForUser(@Arg('userId', () => String) userId: string) {

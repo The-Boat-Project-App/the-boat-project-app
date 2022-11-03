@@ -12,7 +12,7 @@ import {
 } from 'type-graphql'
 import { PostsModel, Posts } from '../models/posts.model'
 import { Users } from '../models/users.model'
-import { PostsInput } from './types/Posts-input'
+import { PostsInput } from './types/posts-input'
 import { MyContext } from './MyContext'
 
 import { isAuth } from './isAuth'

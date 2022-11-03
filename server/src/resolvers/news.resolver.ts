@@ -1,6 +1,6 @@
 import { Resolver, Mutation, Arg, Query, ID } from 'type-graphql'
-import { NewsModel, News } from '../models/News.model'
-import { NewsInput } from './types/News-input'
+import { NewsModel, News } from '../models/news.model'
+import { NewsInput } from './types/news-input'
 import { isAuth } from './isAuth'
 
 @Resolver((_of) => News)
