@@ -50,11 +50,9 @@ type Mutation {
   deleteUsers(id: String!): String!
   loginUsers(UsersLoginInput: UsersInput!): LoginResponse!
   revokeRefreshTokensForUser(userId: String!): Boolean!
-  updateNews(editNewsInput: NewsInput!): News!
   updateNotes(editNotesInput: NotesInput!): Notes!
   updatePosts(editPostsInput: PostsInput!): Posts!
   updateTrip: Trip!
-  updateUsers(editUsersInput: UsersInput!): Users!
 }
 
 """The News Model"""

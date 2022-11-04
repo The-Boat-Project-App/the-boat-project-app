@@ -1,1 +1,1 @@
-web: node src/dist/index.js
+web: yarn workspace the-boat-project-app-server start
