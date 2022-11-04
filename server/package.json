@@ -9,8 +9,7 @@
   "scripts": {
     "start": "node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc --project tsconfig.json",
-    "tsc": "tsc --project tsconfig.json",
+    "tsc": "tsc",
     "postinstall": "npm run tsc"
   },
   "keywords": [],
